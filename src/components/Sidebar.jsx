@@ -69,7 +69,6 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
   ...theme.mixins.toolbar,
   justifyContent: "flex-end",
 }));
@@ -106,7 +105,7 @@ export default function Sidebar() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            The Kings
+            <Link to={"/"}>The Kings</Link>
           </Typography>
         </Toolbar>
       </AppBar>
@@ -153,7 +152,7 @@ export default function Sidebar() {
             </ListItemButton>
           </ListItem>
           <ListItem>
-            <ListItemButton component={Link} to="/minicrossword">
+            <ListItemButton component={Link} to="/mini">
               The Mini
             </ListItemButton>
           </ListItem>
