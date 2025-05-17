@@ -14,18 +14,28 @@ import Welcomepage from "./pages/Welcomepage";
 import { useState } from "react";
 
 function App() {
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [name, setName] = useState(localStorage.getItem("name"));
 
-  const login = () => {
-    setLoggedIn(true);
+  const handleSetName = (userName) => {
+    console.log(userName);
+    setName(userName);
+    localStorage.setItem("name", userName);
+  };
+
+  const clearStorage = () => {
+    setName("");
+    localStorage.removeItem("name");
   };
 
   return (
     <>
-      {loggedIn ? (
+      {name ? (
         <Routes>
           <Route path="/" element={<Sidebar />}>
-            <Route path="" element={<Welcomepage />} />
+            <Route
+              path=""
+              element={<Welcomepage logout={clearStorage} name={name} />}
+            />
             <Route path="leaderboard" element={<Leaderboard />} />
             <Route path="messages" element={<Messages />} />
             <Route path="connections" element={<Connections />} />
@@ -34,7 +44,7 @@ function App() {
           </Route>
         </Routes>
       ) : (
-        <Login login={login} />
+        <Login setName={handleSetName} />
       )}
     </>
   );
