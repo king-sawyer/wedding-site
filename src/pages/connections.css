@@ -1,0 +1,8 @@
+.fade-div {
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+
+.fade-div.visible {
+  opacity: 1;
+}

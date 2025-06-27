@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import data from "../connectionsdata.json";
 
 const Connections = () => {
@@ -6,6 +6,8 @@ const Connections = () => {
   const [selectedWords, setSelectedWords] = useState([]);
   const [attempts, setAttempts] = useState(4);
   const [guesses, setGuesses] = useState([]);
+  const [alreadyGuessed, setAlreadyGuessed] = useState(false);
+  const [oneAway, setOneAway] = useState(false);
 
   const rearrange = () => {
     const shuffled = [...boxes.data].sort(() => Math.random() - 0.5);
@@ -21,13 +23,13 @@ const Connections = () => {
         categories.push(box.category);
       }
     });
-    console.log(categories);
 
     if (selectedWords.length < 4) {
       return;
-    } //else if(check if guess is already in list of guesses){
-
-    //}
+    } else if (guesses.includes(selectedWords)) {
+      console.log("Already guessed! :(");
+      return;
+    }
 
     categories.forEach(function (x) {
       counts[x] = (counts[x] || 0) + 1;
@@ -37,16 +39,13 @@ const Connections = () => {
       console.log("Yay!");
     } else if (Object.values(counts)[0] == 3) {
       console.log("Ooh so close");
+      setAttempts((attempts) => attempts - 1);
+    } else {
+      setAttempts((attempts) => attempts - 1);
     }
 
-    setGuesses((prev) => [...prev, categories]);
-
-    setAttempts((attempts) => attempts - 1);
+    setGuesses((prev) => [...prev, selectedWords]);
   };
-
-  useEffect(() => {
-    console.log(guesses);
-  }, guesses);
 
   const toggleBox = (word) => {
     setSelectedWords((prevSelected) => {
@@ -65,6 +64,10 @@ const Connections = () => {
   const clearSelected = () => {
     setSelectedWords([]);
   };
+
+  const showAlreadyGuessed = () => {};
+
+  const showOneAway = () => {};
 
   return (
     <div
@@ -129,6 +132,15 @@ const Connections = () => {
             </div>
           );
         })}
+      </div>
+      <div>
+        {" "}
+        <div className={`fade-div ${alreadyGuessed ? "visible" : ""}`}>
+          Already Guessed!
+        </div>
+        <div className={`fade-div ${oneAway ? "visible" : ""}`}>
+          One away...
+        </div>
       </div>
       <div
         style={{
