@@ -8,8 +8,8 @@ const Connections = () => {
   const [selectedWords, setSelectedWords] = useState([]);
   const [attempts, setAttempts] = useState(4);
   const [guesses, setGuesses] = useState([]);
-  // const [alreadyGuessed, setAlreadyGuessed] = useState(false);
-  // const [oneAway, setOneAway] = useState(false);
+  const [alreadyGuessed, setAlreadyGuessed] = useState(false);
+  const [oneAway, setOneAway] = useState(false);
 
   const rearrange = () => {
     const shuffled = [...boxes.data].sort(() => Math.random() - 0.5);
@@ -30,6 +30,8 @@ const Connections = () => {
       return;
     } else if (guesses.includes(selectedWords)) {
       console.log("Already guessed! :(");
+      setAlreadyGuessed(true);
+      setTimeout(() => setAlreadyGuessed(false), 2000);
       return;
     }
 
@@ -39,8 +41,13 @@ const Connections = () => {
 
     if (Object.values(counts).length == 1) {
       console.log("Yay!");
-    } else if (Object.values(counts)[0] == 3) {
+    } else if (
+      counts[Object.keys(counts)[0]] == 3 ||
+      counts[Object.keys(counts)[1]] == 3
+    ) {
       console.log("Ooh so close");
+      setOneAway(true);
+      setTimeout(() => setOneAway(false), 2000);
       setAttempts((attempts) => attempts - 1);
     } else {
       setAttempts((attempts) => attempts - 1);
@@ -67,10 +74,6 @@ const Connections = () => {
     setSelectedWords([]);
   };
 
-  // const showAlreadyGuessed = () => {};
-
-  // const showOneAway = () => {};
-
   return (
     <div style={{ width: "95%", marginLeft: "auto", marginRight: "auto" }}>
       <h1
@@ -84,19 +87,21 @@ const Connections = () => {
       <p>Create four groups of four!</p>
 
       <div style={{ display: "flex", flexDirection: "column" }}>
-        <div className="connections-row">
-          {boxes.data.slice(0, 4).map((box, index) => {
-            const isSelected = selectedWords.includes(box.word);
-            return (
-              <div
-                key={index}
-                onClick={() => toggleBox(box.word)}
-                className={`connections-word ${isSelected ? "active" : ""}`}
-              >
-                {box.word}
-              </div>
-            );
-          })}
+        <div className="correct1">
+          <div className="connections-row">
+            {boxes.data.slice(0, 4).map((box, index) => {
+              const isSelected = selectedWords.includes(box.word);
+              return (
+                <div
+                  key={index}
+                  onClick={() => toggleBox(box.word)}
+                  className={`connections-word ${isSelected ? "active" : ""}`}
+                >
+                  {box.word}
+                </div>
+              );
+            })}
+          </div>
         </div>
 
         <div className="connections-row">
@@ -144,7 +149,7 @@ const Connections = () => {
           })}
         </div>
       </div>
-      {/* <div>
+      <div>
         {" "}
         <div className={`fade-div ${alreadyGuessed ? "visible" : ""}`}>
           Already Guessed!
@@ -152,7 +157,7 @@ const Connections = () => {
         <div className={`fade-div ${oneAway ? "visible" : ""}`}>
           One away...
         </div>
-      </div> */}
+      </div>
       <div
         style={{
           display: "flex",

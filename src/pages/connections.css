@@ -1,10 +1,12 @@
 .fade-div {
   opacity: 0;
-  transition: opacity 1s ease-in-out;
+  transition: opacity 0.5s ease-out;
+  color: white;
 }
 
 .fade-div.visible {
   opacity: 1;
+  transition: opacity 0.2s ease-out;
 }
 
 .connections-row {
