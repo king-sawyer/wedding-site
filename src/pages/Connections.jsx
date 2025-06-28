@@ -1,13 +1,15 @@
 import { useState } from "react";
 import data from "../connectionsdata.json";
 
+import "./connections.css";
+
 const Connections = () => {
   const [boxes, setBoxes] = useState(data);
   const [selectedWords, setSelectedWords] = useState([]);
   const [attempts, setAttempts] = useState(4);
   const [guesses, setGuesses] = useState([]);
-  const [alreadyGuessed, setAlreadyGuessed] = useState(false);
-  const [oneAway, setOneAway] = useState(false);
+  // const [alreadyGuessed, setAlreadyGuessed] = useState(false);
+  // const [oneAway, setOneAway] = useState(false);
 
   const rearrange = () => {
     const shuffled = [...boxes.data].sort(() => Math.random() - 0.5);
@@ -65,26 +67,12 @@ const Connections = () => {
     setSelectedWords([]);
   };
 
-  const showAlreadyGuessed = () => {};
+  // const showAlreadyGuessed = () => {};
 
-  const showOneAway = () => {};
+  // const showOneAway = () => {};
 
   return (
-    <div
-      style={{
-        margin: 0,
-        padding: 0,
-        width: "100vw",
-        height: "100vh",
-        overflow: "hidden",
-        boxSizing: "border-box",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "space-evenly",
-        backgroundColor: "#000",
-      }}
-    >
+    <div style={{ width: "95%", marginLeft: "auto", marginRight: "auto" }}>
       <h1
         style={{
           margin: "10px 0 0 0",
@@ -95,45 +83,68 @@ const Connections = () => {
       </h1>
       <p>Create four groups of four!</p>
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(4, 1fr)",
-          gap: "4px",
-          width: "92vw",
-          aspectRatio: "1 / 1",
-          boxSizing: "border-box",
-        }}
-      >
-        {boxes.data.slice(0, 16).map((box, index) => {
-          const isSelected = selectedWords.includes(box.word);
-          return (
-            <div
-              key={index}
-              onClick={() => toggleBox(box.word)}
-              style={{
-                backgroundColor: isSelected ? "#5a594e" : "#efefe6",
-                color: isSelected ? "white" : "black",
-                borderRadius: "6px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontWeight: "bold",
-                fontSize: "clamp(10px, 2vw, 22px)",
-                textAlign: "center",
-                padding: "4px",
-                wordBreak: "break-word",
-                boxSizing: "border-box",
-                aspectRatio: "1 / 1",
-                width: "100%",
-              }}
-            >
-              {box.word}
-            </div>
-          );
-        })}
+      <div style={{ display: "flex", flexDirection: "column" }}>
+        <div className="connections-row">
+          {boxes.data.slice(0, 4).map((box, index) => {
+            const isSelected = selectedWords.includes(box.word);
+            return (
+              <div
+                key={index}
+                onClick={() => toggleBox(box.word)}
+                className={`connections-word ${isSelected ? "active" : ""}`}
+              >
+                {box.word}
+              </div>
+            );
+          })}
+        </div>
+
+        <div className="connections-row">
+          {boxes.data.slice(4, 8).map((box, index) => {
+            const isSelected = selectedWords.includes(box.word);
+            return (
+              <div
+                key={index}
+                onClick={() => toggleBox(box.word)}
+                className={`connections-word ${isSelected ? "active" : ""}`}
+              >
+                {box.word}
+              </div>
+            );
+          })}
+        </div>
+
+        <div className="connections-row">
+          {boxes.data.slice(8, 12).map((box, index) => {
+            const isSelected = selectedWords.includes(box.word);
+            return (
+              <div
+                key={index}
+                onClick={() => toggleBox(box.word)}
+                className={`connections-word ${isSelected ? "active" : ""}`}
+              >
+                {box.word}
+              </div>
+            );
+          })}
+        </div>
+
+        <div className="connections-row">
+          {boxes.data.slice(12, 16).map((box, index) => {
+            const isSelected = selectedWords.includes(box.word);
+            return (
+              <div
+                key={index}
+                onClick={() => toggleBox(box.word)}
+                className={`connections-word ${isSelected ? "active" : ""}`}
+              >
+                {box.word}
+              </div>
+            );
+          })}
+        </div>
       </div>
-      <div>
+      {/* <div>
         {" "}
         <div className={`fade-div ${alreadyGuessed ? "visible" : ""}`}>
           Already Guessed!
@@ -141,13 +152,12 @@ const Connections = () => {
         <div className={`fade-div ${oneAway ? "visible" : ""}`}>
           One away...
         </div>
-      </div>
+      </div> */}
       <div
         style={{
           display: "flex",
           justifyContent: "center",
           alignContent: "center",
-          width: "100vw",
         }}
       >
         <p>Mistakes Remaining:</p>

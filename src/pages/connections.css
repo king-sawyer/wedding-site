@@ -6,3 +6,28 @@
 .fade-div.visible {
   opacity: 1;
 }
+
+.connections-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.connections-word {
+  font-size: clamp(10px, 2vw, 22px);
+  height: 100px;
+  background-color: #efefe6;
+  color: black;
+  border-radius: 6px;
+  margin: 3px;
+  padding: 5px;
+  font-weight: bold;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.connections-word.active {
+  background-color: #5a594e;
+  color: white;
+}
