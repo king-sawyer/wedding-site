@@ -27,7 +27,7 @@ const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    marginLeft: `-${drawerWidth}px`,
+    // marginLeft: `-${drawerWidth}px`,
     variants: [
       {
         props: ({ open }) => open,
@@ -118,9 +118,10 @@ export default function Sidebar() {
             boxSizing: "border-box",
           },
         }}
-        variant="persistent"
+        variant="temporary"
         anchor="left"
         open={open}
+        onClose={() => setOpen(false)}
       >
         <DrawerHeader>
           <IconButton onClick={handleDrawerClose}>

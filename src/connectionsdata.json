@@ -1,84 +1,84 @@
 {
   "data": [
     {
-      "word": "MYTH\nBUSTERS",
-      "category": "Shows Sawyer might put on when Shelby is going to bed",
-      "color": "blue"
+      "word": "SHREK",
+      "category": "Words that start with S and end with K",
+      "color": "#f9df6d"
     },
     {
       "word": "WHIPLASH",
-      "category": "Shows Sawyer might put on when Shelby is going to bed",
-      "color": "blue"
-    },
-    {
-      "word": "THE DARK\nKNIGHT",
-      "category": "Shows Sawyer might put on when Shelby is going to bed",
-      "color": "blue"
-    },
-    {
-      "word": "NATIONAL\nTREASURE",
-      "category": "Shows Sawyer might put on when Shelby is going to bed",
-      "color": "blue"
-    },
-    {
-      "word": "SQUAK",
-      "category": "Words that start with S and end with K",
-      "color": "yellow"
-    },
-    {
-      "word": "SPORK",
-      "category": "Words that start with S and end with K",
-      "color": "yellow"
-    },
-    {
-      "word": "SHREK",
-      "category": "Words that start with S and end with K",
-      "color": "yellow"
-    },
-    {
-      "word": "SLAMDUNK",
-      "category": "Words that start with S and end with K",
-      "color": "yellow"
-    },
-    {
-      "word": "BURGER",
-      "category": "_ King",
-      "color": "green"
-    },
-    {
-      "word": "THE LION",
-      "category": "_ King",
-      "color": "green"
-    },
-    {
-      "word": "RAT",
-      "category": "_ King",
-      "color": "green"
-    },
-    {
-      "word": "Larry",
-      "category": "_ King",
-      "color": "green"
-    },
-    {
-      "word": "VASE",
-      "category": "Sawyers Tattoos",
-      "color": "purple"
+      "category": "Shows Sawyer has put on when Shelby was going to bed",
+      "color": "#b0c4ef"
     },
     {
       "word": "DOG",
       "category": "Sawyers Tattoos",
-      "color": "purple"
+      "color": "#ba81c5"
     },
     {
-      "word": "STRAWBERRY",
-      "category": "Sawyers Tattoos",
-      "color": "purple"
+      "word": "THE DARK\nKNIGHT",
+      "category": "Shows Sawyer has put on when Shelby was going to bed",
+      "color": "#b0c4ef"
+    },
+    {
+      "word": "BURGER",
+      "category": "_ King",
+      "color": "#a0c35a"
     },
     {
       "word": "MOON",
       "category": "Sawyers Tattoos",
-      "color": "purple"
+      "color": "#ba81c5"
+    },
+    {
+      "word": "SLAMDUNK",
+      "category": "Words that start with S and end with K",
+      "color": "#f9df6d"
+    },
+    {
+      "word": "SPORK",
+      "category": "Words that start with S and end with K",
+      "color": "#f9df6d"
+    },
+    {
+      "word": "VASE",
+      "category": "Sawyers Tattoos",
+      "color": "#ba81c5"
+    },
+    {
+      "word": "THE LION",
+      "category": "_ King",
+      "color": "#a0c35a"
+    },
+    {
+      "word": "MYTH\nBUSTERS",
+      "category": "Shows Sawyer has put on when Shelby was going to bed",
+      "color": "#b0c4ef"
+    },
+    {
+      "word": "SQUAK",
+      "category": "Words that start with S and end with K",
+      "color": "#f9df6d"
+    },
+    {
+      "word": "NATIONAL\nTREASURE",
+      "category": "Shows Sawyer has put on when Shelby was going to bed",
+      "color": "#b0c4ef"
+    },
+    {
+      "word": "STRAWBERRY",
+      "category": "Sawyers Tattoos",
+      "color": "#ba81c5"
+    },
+    {
+      "word": "LARRY",
+      "category": "_ King",
+      "color": "#a0c35a"
+    },
+    {
+      "word": "RAT",
+      "category": "_ King",
+      "color": "#a0c35a"
     }
   ]
 }

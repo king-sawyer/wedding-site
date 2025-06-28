@@ -11,6 +11,10 @@ const Connections = () => {
   const [alreadyGuessed, setAlreadyGuessed] = useState(false);
   const [oneAway, setOneAway] = useState(false);
 
+  const [correctlyGuessedCategories, setCorrectlyGuessedCategories] = useState(
+    []
+  );
+
   const rearrange = () => {
     const shuffled = [...boxes.data].sort(() => Math.random() - 0.5);
     setBoxes({ data: shuffled });
@@ -19,10 +23,12 @@ const Connections = () => {
   const checkAttempt = () => {
     let categories = [];
     let counts = {};
+    let categoryColor = "";
 
     boxes["data"].map((box) => {
       if (selectedWords.includes(box.word)) {
         categories.push(box.category);
+        categoryColor = box.color;
       }
     });
 
@@ -40,7 +46,24 @@ const Connections = () => {
     });
 
     if (Object.values(counts).length == 1) {
+      const guessedCategory = Object.keys(counts)[0];
+
       console.log("Yay!");
+
+      setCorrectlyGuessedCategories((prev) => [
+        ...prev,
+        {
+          category: guessedCategory,
+          words: selectedWords,
+          color: categoryColor,
+        },
+      ]);
+
+      setBoxes((prevBoxes) => ({
+        data: prevBoxes.data.filter((box) => !selectedWords.includes(box.word)),
+      }));
+
+      setSelectedWords([]);
     } else if (
       counts[Object.keys(counts)[0]] == 3 ||
       counts[Object.keys(counts)[1]] == 3
@@ -87,68 +110,43 @@ const Connections = () => {
       <p>Create four groups of four!</p>
 
       <div style={{ display: "flex", flexDirection: "column" }}>
-        <div className="correct1">
-          <div className="connections-row">
-            {boxes.data.slice(0, 4).map((box, index) => {
-              const isSelected = selectedWords.includes(box.word);
-              return (
-                <div
-                  key={index}
-                  onClick={() => toggleBox(box.word)}
-                  className={`connections-word ${isSelected ? "active" : ""}`}
-                >
-                  {box.word}
-                </div>
-              );
-            })}
+        {/* Render correctly guessed categories */}
+        {correctlyGuessedCategories.map((guessedCategory, index) => (
+          <div
+            key={`correct-${index}`}
+            className="correct-category-row"
+            style={{ backgroundColor: guessedCategory.color }}
+          >
+            <div className="category-label">{guessedCategory.category}</div>
+            <div className="category-words">
+              {guessedCategory.words.join(", ")}
+            </div>
           </div>
-        </div>
+        ))}
 
-        <div className="connections-row">
-          {boxes.data.slice(4, 8).map((box, index) => {
-            const isSelected = selectedWords.includes(box.word);
-            return (
-              <div
-                key={index}
-                onClick={() => toggleBox(box.word)}
-                className={`connections-word ${isSelected ? "active" : ""}`}
-              >
-                {box.word}
-              </div>
-            );
-          })}
-        </div>
-
-        <div className="connections-row">
-          {boxes.data.slice(8, 12).map((box, index) => {
-            const isSelected = selectedWords.includes(box.word);
-            return (
-              <div
-                key={index}
-                onClick={() => toggleBox(box.word)}
-                className={`connections-word ${isSelected ? "active" : ""}`}
-              >
-                {box.word}
-              </div>
-            );
-          })}
-        </div>
-
-        <div className="connections-row">
-          {boxes.data.slice(12, 16).map((box, index) => {
-            const isSelected = selectedWords.includes(box.word);
-            return (
-              <div
-                key={index}
-                onClick={() => toggleBox(box.word)}
-                className={`connections-word ${isSelected ? "active" : ""}`}
-              >
-                {box.word}
-              </div>
-            );
-          })}
-        </div>
+        {/* Render the remaining words, arranged in rows */}
+        {/* You'll need to dynamically create rows based on the remaining words */}
+        {Array.from(
+          { length: Math.ceil(boxes.data.length / 4) },
+          (_, rowIndex) => (
+            <div key={`row-${rowIndex}`} className="connections-row">
+              {boxes.data.slice(rowIndex * 4, rowIndex * 4 + 4).map((box) => {
+                const isSelected = selectedWords.includes(box.word);
+                return (
+                  <div
+                    key={box.word} // Use box.word as key if it's unique, or a combination
+                    onClick={() => toggleBox(box.word)}
+                    className={`connections-word ${isSelected ? "active" : ""}`}
+                  >
+                    {box.word}
+                  </div>
+                );
+              })}
+            </div>
+          )
+        )}
       </div>
+
       <div>
         {" "}
         <div className={`fade-div ${alreadyGuessed ? "visible" : ""}`}>
