@@ -12,6 +12,7 @@ import Leaderboard from "./pages/Leaderboard";
 import Welcomepage from "./pages/Welcomepage";
 
 import { useState } from "react";
+import Profile from "./pages/Profile";
 
 function App() {
   const [name, setName] = useState(localStorage.getItem("name"));
@@ -41,6 +42,7 @@ function App() {
             <Route path="connections" element={<Connections />} />
             <Route path="mini" element={<MiniCrossword />} />
             <Route path="wordle" element={<Wordle />} />
+            <Route path="/profile" element={<Profile />} />
           </Route>
         </Routes>
       ) : (
