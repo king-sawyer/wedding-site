@@ -1,12 +1,13 @@
 import React, { useState, useCallback } from "react";
 import Cropper from "react-easy-crop";
 
-const Profile = () => {
+const Profile = ({ userData }) => {
   const [imageSrc, setImageSrc] = useState(null);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [croppedImage, setCroppedImage] = useState(null);
+  const [editMode, setEditMode] = useState(false);
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
@@ -17,6 +18,10 @@ const Profile = () => {
       };
       reader.readAsDataURL(file);
     }
+  };
+
+  const toggleEditMode = () => {
+    setEditMode(!editMode);
   };
 
   const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
@@ -54,12 +59,8 @@ const Profile = () => {
       size
     );
 
-    return new Promise((resolve) => {
-      canvas.toBlob((blob) => {
-        const croppedImageUrl = URL.createObjectURL(blob);
-        resolve(croppedImageUrl);
-      }, "image/png");
-    });
+    const dataUrl = canvas.toDataURL("image/png");
+    return dataUrl;
   }, [imageSrc, croppedAreaPixels]);
 
   const showCroppedImage = useCallback(async () => {
@@ -67,9 +68,34 @@ const Profile = () => {
     setCroppedImage(croppedImageUrl);
   }, [getCroppedImg]);
 
-  return (
-    <div className="flex flex-col items-center gap-4">
+  return editMode ? (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
+      <h3>Edit mode</h3>
+      {croppedImage && (
+        <div className="w-48 h-48 rounded-full overflow-hidden border border-gray-300">
+          <img
+            style={{ width: "50%" }}
+            src={croppedImage}
+            alt="Cropped"
+            className="w-full h-full object-cover"
+          />
+        </div>
+      )}
+      <label>
+        First name:
+        <input type="text" value={userData["first"]} />
+      </label>
+      <label>
+        Last name:
+        <input type="text" placeholder="Optional..." value={userData["last"]} />
+      </label>
       <input type="file" accept="image/*" onChange={handleImageUpload} />
+      <button onClick={toggleEditMode}>Submit</button>
 
       {imageSrc && !croppedImage && (
         <div className="relative w-64 h-64 bg-gray-200">
@@ -85,6 +111,7 @@ const Profile = () => {
             onCropComplete={onCropComplete}
           />
           <button
+            style={{ width: "200px", position: "fixed" }}
             onClick={showCroppedImage}
             className="absolute bottom-2 left-2 px-3 py-1 bg-blue-500 text-white rounded"
           >
@@ -92,16 +119,12 @@ const Profile = () => {
           </button>
         </div>
       )}
-
-      {croppedImage && (
-        <div className="w-48 h-48 rounded-full overflow-hidden border border-gray-300">
-          <img
-            src={croppedImage}
-            alt="Cropped"
-            className="w-full h-full object-cover"
-          />
-        </div>
-      )}
+    </div>
+  ) : (
+    <div>
+      <h3>Name: {userData["first"]}</h3>
+      <h3>Last name: {userData["last"]}</h3>
+      <button onClick={toggleEditMode}>Edit profile data</button>
     </div>
   );
 };

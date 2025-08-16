@@ -12,41 +12,49 @@ import Leaderboard from "./pages/Leaderboard";
 import Welcomepage from "./pages/Welcomepage";
 
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Profile from "./pages/Profile";
+import PhotoPage from "./pages/PhotoPage";
 
 function App() {
-  const [name, setName] = useState(localStorage.getItem("name"));
+  const [userData, setUserData] = useState(
+    JSON.parse(localStorage.getItem("userData")) || null
+  );
+  const navigate = useNavigate();
 
-  const handleSetName = (userName) => {
-    console.log(userName);
-    setName(userName);
-    localStorage.setItem("name", userName);
+  const handleSetUserData = (returnedUserData) => {
+    setUserData(returnedUserData);
+    localStorage.setItem("userData", JSON.stringify(returnedUserData));
   };
 
   const clearStorage = () => {
-    setName("");
-    localStorage.removeItem("name");
+    localStorage.removeItem("userData");
+    setUserData(null);
+    navigate("/");
   };
 
   return (
     <>
-      {name ? (
+      {userData ? (
         <Routes>
           <Route path="/" element={<Sidebar />}>
             <Route
               path=""
-              element={<Welcomepage logout={clearStorage} name={name} />}
+              element={
+                <Welcomepage logout={clearStorage} userData={userData} />
+              }
             />
             <Route path="leaderboard" element={<Leaderboard />} />
             <Route path="messages" element={<Messages />} />
             <Route path="connections" element={<Connections />} />
             <Route path="mini" element={<MiniCrossword />} />
             <Route path="wordle" element={<Wordle />} />
-            <Route path="/profile" element={<Profile />} />
+            <Route path="photos" element={<PhotoPage />} />
+            <Route path="/profile" element={<Profile userData={userData} />} />
           </Route>
         </Routes>
       ) : (
-        <Login setName={handleSetName} />
+        <Login setUserData={handleSetUserData} />
       )}
     </>
   );

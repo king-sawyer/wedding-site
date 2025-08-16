@@ -1,8 +1,8 @@
-const Welcomepage = ({ logout, name }) => {
+const Welcomepage = ({ logout, userData }) => {
   return (
     <div>
       <h1>Welcome page</h1>
-      <h2>Hi {name}, welcome to the wedding!</h2>
+      <h2>Hi {userData["first"]}, welcome to the wedding!</h2>
       <button onClick={() => logout()}>Log out</button>
     </div>
   );

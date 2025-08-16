@@ -17,6 +17,8 @@ import ListItemButton from "@mui/material/ListItemButton";
 
 import { Outlet, Link } from "react-router-dom";
 
+import { useNavigate } from "react-router-dom";
+
 const drawerWidth = 240;
 
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
@@ -77,12 +79,18 @@ export default function Sidebar() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
+  const navigate = useNavigate();
+
   const handleDrawerOpen = () => {
     setOpen(true);
   };
 
   const handleDrawerClose = () => {
     setOpen(false);
+  };
+
+  const navigateToProfilePage = () => {
+    navigate("/profile");
   };
 
   return (
@@ -104,9 +112,23 @@ export default function Sidebar() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            <Link to={"/"}>The Kings</Link>
-          </Typography>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              width: "100%",
+            }}
+          >
+            <Link style={{ color: "white" }} to={"/"}>
+              The Kings
+            </Link>
+            <img
+              style={{ width: "30px", borderRadius: "50%" }}
+              src="/public/default.jpg"
+              onClick={() => navigateToProfilePage()}
+            />
+          </div>
         </Toolbar>
       </AppBar>
       <Drawer
