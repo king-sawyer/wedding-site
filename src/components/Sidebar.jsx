@@ -157,6 +157,11 @@ export default function Sidebar() {
         <Divider />
         <List>
           <ListItem>
+            <ListItemButton component={Link} to="/photos">
+              Photos
+            </ListItemButton>
+          </ListItem>
+          <ListItem>
             <ListItemButton component={Link} to="/messages">
               Messages
             </ListItemButton>
