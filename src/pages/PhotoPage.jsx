@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../SupabaseClient";
 
+import "./photopage.css";
+
 const PhotoPage = () => {
   console.log(supabase);
 
@@ -68,82 +70,19 @@ const PhotoPage = () => {
     <div>
       {addImage && (
         <>
-          <div
-            style={{
-              position: "fixed",
-              top: 0,
-              left: 0,
-              width: "100vw",
-              height: "100vh",
-              backgroundColor: "rgba(0,0,0,0.5)",
-              zIndex: 9,
-            }}
-          />
+          <div className="backdrop" />
 
-          <div
-            style={{
-              position: "fixed",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-              background: "white",
-              padding: "40px",
-              borderRadius: "12px",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              zIndex: 10,
-              minWidth: "330px",
-            }}
-          >
-            <button
-              onClick={toggleAddImage}
-              style={{
-                position: "absolute",
-                top: "10px",
-                right: "10px",
-                border: "none",
-                background: "red",
-                color: "white",
-                width: "25px",
-                height: "25px",
-                borderRadius: "50%",
-                cursor: "pointer",
-                fontWeight: "bold",
-              }}
-            >
+          <div className="modal">
+            <button className="modal-close" onClick={toggleAddImage}>
               ×
             </button>
 
             {preview && (
-              <div
-                style={{
-                  position: "relative",
-                  marginBottom: "15px",
-                }}
-              >
-                <img
-                  src={preview}
-                  style={{
-                    height: "200px",
-                    borderRadius: "8px",
-                  }}
-                />
+              <div className="preview-wrapper">
+                <img className="preview-image" src={preview} />
                 <button
+                  className="preview-remove"
                   onClick={() => setPreview(null)}
-                  style={{
-                    position: "absolute",
-                    top: "-8px",
-                    right: "-8px",
-                    border: "none",
-                    background: "red",
-                    color: "white",
-                    width: "22px",
-                    height: "22px",
-                    borderRadius: "50%",
-                    cursor: "pointer",
-                    fontWeight: "bold",
-                  }}
                 >
                   ×
                 </button>
@@ -151,31 +90,19 @@ const PhotoPage = () => {
             )}
 
             {preview && (
-              <button
-                onClick={uploadImage}
-                style={{ padding: "8px 16px", marginTop: "5px" }}
-              >
+              <button className="upload-btn" onClick={uploadImage}>
                 Upload
               </button>
             )}
 
-            <div style={{ marginTop: "20px", textAlign: "center" }}>
-              <label
-                style={{
-                  display: "inline-block",
-                  padding: "8px 16px",
-                  backgroundColor: "#4267B2",
-                  color: "white",
-                  borderRadius: "6px",
-                  cursor: "pointer",
-                }}
-              >
+            <div className="file-input-wrapper">
+              <label className="file-label">
                 Choose Image
                 <input
-                  style={{ display: "none" }}
                   type="file"
                   accept="image/*"
                   onChange={handleImageUpload}
+                  className="file-input"
                 />
               </label>
             </div>
@@ -183,32 +110,12 @@ const PhotoPage = () => {
         </>
       )}
 
-      <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
+      <div className="image-grid">
         {images.map((url) => (
-          <img
-            key={url}
-            src={url}
-            style={{ width: "150px", height: "150px", objectFit: "cover" }}
-          />
+          <img key={url} src={url} className="grid-image" />
         ))}
 
-        {/* floating + button */}
-        <button
-          onClick={toggleAddImage}
-          style={{
-            borderRadius: "100%",
-            fontWeight: "bold",
-            fontSize: "150%",
-            width: "60px",
-            height: "60px",
-            backgroundColor: "#4267B2",
-            color: "white",
-            position: "fixed",
-            bottom: "20px",
-            right: "20px",
-            cursor: "pointer",
-          }}
-        >
+        <button className="fab-btn" onClick={toggleAddImage}>
           +
         </button>
       </div>
