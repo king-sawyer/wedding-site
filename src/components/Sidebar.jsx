@@ -125,7 +125,7 @@ export default function Sidebar() {
             </Link>
             <img
               style={{ width: "30px", borderRadius: "50%" }}
-              src="/public/default.jpg"
+              src="/default.jpg"
               onClick={() => navigateToProfilePage()}
             />
           </div>
