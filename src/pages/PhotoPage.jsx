@@ -1,22 +1,31 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../SupabaseClient";
 
+import { toast } from "react-toastify";
+
 import "./photopage.css";
 
 const PhotoPage = () => {
-  console.log(supabase);
-
   const [imageFile, setImageFile] = useState(null);
   const [preview, setPreview] = useState(null);
   const [images, setImages] = useState([]);
   const [addImage, setAddImage] = useState(false);
 
+  //const [isUploading, setIsUploading] = useState(false);
+  //const [loadingText, setLoadingText] = useState("");
+
   useEffect(() => {
     fetchImages();
   }, []);
 
-  async function uploadImage() {
+  const uploadImage = async () => {
     if (!imageFile) return;
+
+    setPreview(null);
+
+    toggleAddImage();
+
+    toast("Uploading image...");
 
     const { data, error } = await supabase.storage
       .from("wedding-pictures")
@@ -25,12 +34,16 @@ const PhotoPage = () => {
         upsert: false,
       });
 
-    if (error) console.error(error);
-    else {
+    if (error) {
+      toast.error(error.message);
+      return;
+    } else {
       console.log("Uploaded:", data);
+      toast.success("Image uploaded succesfully!");
+
       fetchImages();
     }
-  }
+  };
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
