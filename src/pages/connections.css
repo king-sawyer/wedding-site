@@ -1,7 +1,7 @@
 .fade-div {
   opacity: 0;
   transition: opacity 0.5s ease-out;
-  color: white;
+  /* // color: white; */
 }
 
 .fade-div.visible {
@@ -17,8 +17,10 @@
 .connections-word {
   font-size: clamp(10px, 2vw, 22px);
   height: 100px;
-  background-color: #efefe6;
-  color: black;
+  background-color: white;
+  /* background-color: #efefe6; */
+  /* color: #8a9a5b; */
+  color: #5a86ad;
   border-radius: 6px;
   margin: 3px;
   padding: 5px;
@@ -33,7 +35,7 @@
 
 .connections-word.active {
   transition: 0.2s ease-in-out;
-  background-color: #5a594e;
+  background-color: #5a86ad;
   color: white;
 }
 

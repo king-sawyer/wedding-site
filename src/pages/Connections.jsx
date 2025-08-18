@@ -102,7 +102,7 @@ const Connections = () => {
       <h1
         style={{
           margin: "10px 0 0 0",
-          color: "white",
+          // color: "white",
         }}
       >
         Connections
@@ -110,7 +110,6 @@ const Connections = () => {
       <p>Create four groups of four!</p>
 
       <div style={{ display: "flex", flexDirection: "column" }}>
-        {/* Render correctly guessed categories */}
         {correctlyGuessedCategories.map((guessedCategory, index) => (
           <div
             key={`correct-${index}`}
@@ -124,8 +123,6 @@ const Connections = () => {
           </div>
         ))}
 
-        {/* Render the remaining words, arranged in rows */}
-        {/* You'll need to dynamically create rows based on the remaining words */}
         {Array.from(
           { length: Math.ceil(boxes.data.length / 4) },
           (_, rowIndex) => (
@@ -134,7 +131,7 @@ const Connections = () => {
                 const isSelected = selectedWords.includes(box.word);
                 return (
                   <div
-                    key={box.word} // Use box.word as key if it's unique, or a combination
+                    key={box.word}
                     onClick={() => toggleBox(box.word)}
                     className={`connections-word ${isSelected ? "active" : ""}`}
                   >
@@ -175,7 +172,7 @@ const Connections = () => {
           {Array.from({ length: attempts }).map((_, index) => (
             <div
               style={{
-                backgroundColor: "gray",
+                backgroundColor: "#8a9a5b",
                 borderRadius: "100%",
                 height: "15px",
                 width: "15px",
