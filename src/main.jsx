@@ -15,6 +15,7 @@ import { ToastContainer, Bounce } from "react-toastify";
 const weddingTheme = createTheme({
   palette: {
     primary: {
+      light: "rgb(254, 235, 235)",
       main: "#8A9A5B",
       dark: "#4A5D23",
       contrastText: "white",

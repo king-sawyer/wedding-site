@@ -138,6 +138,8 @@ export default function Sidebar() {
           "& .MuiDrawer-paper": {
             width: drawerWidth,
             boxSizing: "border-box",
+            backgroundColor: "rgb(254, 235, 235)",
+            color: "rgb(220, 71, 45)",
           },
         }}
         variant="temporary"
@@ -148,7 +150,7 @@ export default function Sidebar() {
         <DrawerHeader>
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === "ltr" ? (
-              <ChevronLeftIcon />
+              <ChevronLeftIcon style={{ color: "white" }} />
             ) : (
               <ChevronRightIcon />
             )}
@@ -158,17 +160,17 @@ export default function Sidebar() {
         <List>
           <ListItem>
             <ListItemButton component={Link} to="/photos">
-              Photos
+              PHOTOS
             </ListItemButton>
           </ListItem>
           <ListItem>
             <ListItemButton component={Link} to="/messages">
-              Messages
+              MESSAGES
             </ListItemButton>
           </ListItem>
           <ListItem>
             <ListItemButton component={Link} to="/leaderboard">
-              Leaderboard
+              LEADERBOARD
             </ListItemButton>
           </ListItem>
         </List>
@@ -176,17 +178,17 @@ export default function Sidebar() {
         <List>
           <ListItem>
             <ListItemButton component={Link} to="/connections">
-              Connections
+              CONNECTIONS
             </ListItemButton>
           </ListItem>
           <ListItem>
             <ListItemButton component={Link} to="/mini">
-              The Mini
+              THE MINI
             </ListItemButton>
           </ListItem>
           <ListItem>
             <ListItemButton component={Link} to="/wordle">
-              Wordle
+              WORDLE
             </ListItemButton>
           </ListItem>
         </List>

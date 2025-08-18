@@ -12,8 +12,12 @@ const Login = ({ setUserData }) => {
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        <h1>Hello! Welcome to the wedding. </h1>
-        <h3>Please provide your information below.</h3>
+        <h1>Let the party begin!</h1>
+
+        <h3>
+          Please provide your information to get details about the wedding, play
+          mini games, and upload pictures throughout the night.
+        </h3>
         <div style={{ display: "flex", flexDirection: "column" }}>
           <div style={{ paddingTop: "5px" }}>
             <label>
