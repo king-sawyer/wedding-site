@@ -11,6 +11,8 @@ const Connections = () => {
   const [alreadyGuessed, setAlreadyGuessed] = useState(false);
   const [oneAway, setOneAway] = useState(false);
 
+  const [numCorrect, setNumCorrect] = useState(0);
+
   const [correctlyGuessedCategories, setCorrectlyGuessedCategories] = useState(
     []
   );
@@ -18,6 +20,16 @@ const Connections = () => {
   const rearrange = () => {
     const shuffled = [...boxes.data].sort(() => Math.random() - 0.5);
     setBoxes({ data: shuffled });
+  };
+
+  const checkWinCondition = () => {
+    if (numCorrect == 3) {
+      console.log("you win! :)");
+    }
+
+    if (attempts == 1) {
+      console.log("you lose! :(");
+    }
   };
 
   const checkAttempt = () => {
@@ -64,6 +76,7 @@ const Connections = () => {
       }));
 
       setSelectedWords([]);
+      setNumCorrect((numCorrect) => ++numCorrect);
     } else if (
       counts[Object.keys(counts)[0]] == 3 ||
       counts[Object.keys(counts)[1]] == 3
@@ -77,6 +90,7 @@ const Connections = () => {
     }
 
     setGuesses((prev) => [...prev, selectedWords]);
+    checkWinCondition();
   };
 
   const toggleBox = (word) => {
@@ -102,7 +116,6 @@ const Connections = () => {
       <h1
         style={{
           margin: "10px 0 0 0",
-          // color: "white",
         }}
       >
         Connections
