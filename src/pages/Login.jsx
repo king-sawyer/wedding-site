@@ -1,13 +1,30 @@
 import { useState } from "react";
+import { supabase } from "../SupabaseClient";
 
 const Login = ({ setUserData }) => {
   const [firstName, setfirstName] = useState("");
   const [lastName, setLastName] = useState("");
 
   const handleSubmit = (e) => {
+    const uuid = crypto.randomUUID();
+
     e.preventDefault();
-    setUserData({ first: firstName, last: lastName });
+    setUserData({ first: firstName, last: lastName, userId: uuid });
+
+    addUser("users", { first: firstName, last: lastName, userId: uuid });
   };
+
+  async function addUser(tableName, data) {
+    const { error } = await supabase.from(tableName).insert({
+      firstName: data.first,
+      lastName: data.last,
+      uuid: data.userId,
+    });
+
+    if (error) {
+      console.error(error.message);
+    }
+  }
 
   return (
     <div>
@@ -42,7 +59,6 @@ const Login = ({ setUserData }) => {
                 type="text"
                 id="lastName"
                 value={lastName}
-                placeholder="Optional..."
                 onChange={(e) => setLastName(e.target.value)}
                 required
               />
