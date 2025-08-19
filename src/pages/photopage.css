@@ -21,6 +21,9 @@
   align-items: center;
   z-index: 10;
   min-width: 330px;
+  max-width: 90vw; /* <--- Add this */
+  max-height: 90vh; /* <--- Add this so everything stays inside */
+  overflow: hidden;
 }
 
 .modal-close {
@@ -61,6 +64,45 @@
   font-weight: bold;
 }
 
+.preview-container {
+  width: 100%; /* <--- Force container to stay within modal */
+  max-width: 100%;
+  height: 350px; /* Fixed height */
+  overflow-x: auto;
+  overflow-y: hidden;
+  display: flex;
+  gap: 10px;
+  padding-bottom: 5px;
+}
+
+.preview-item {
+  position: relative;
+  width: 275px;
+  height: 275px;
+  flex: 0 0 auto;
+  overflow: visible;
+}
+
+.preview-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.preview-item button {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background-color: rgb(220, 71, 45) !important;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+}
+
 .upload-btn {
   margin-top: 5px;
   padding: 8px 16px;
@@ -85,15 +127,20 @@
 }
 
 .image-grid {
+  margin-top: 10px;
+
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
+  justify-content: center;
+  align-items: center;
 }
 
 .grid-image {
   width: 150px;
-  height: 150px;
+  height: 200px;
   object-fit: cover;
+  border-radius: 8px;
 }
 
 .fab-btn {

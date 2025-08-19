@@ -6,51 +6,53 @@ import { toast } from "react-toastify";
 import "./photopage.css";
 
 const PhotoPage = () => {
-  const [imageFile, setImageFile] = useState(null);
-  const [preview, setPreview] = useState(null);
+  const [imageFiles, setImageFiles] = useState([]); // store multiple File objects
+  const [previews, setPreviews] = useState([]); // store preview URLs
   const [images, setImages] = useState([]);
   const [addImage, setAddImage] = useState(false);
-
-  //const [isUploading, setIsUploading] = useState(false);
-  //const [loadingText, setLoadingText] = useState("");
 
   useEffect(() => {
     fetchImages();
   }, []);
 
   const uploadImage = async () => {
-    if (!imageFile) return;
-
-    setPreview(null);
+    if (!imageFiles.length) return;
 
     toggleAddImage();
+    const toastId = toast.loading(
+      "Uploading: this may take a while if uploading multiple at once..."
+    );
 
-    toast("Uploading image...");
+    for (let file of imageFiles) {
+      const { data, error } = await supabase.storage
+        .from("wedding-pictures")
+        .upload(`public/${file.name}`, file, {
+          cacheControl: "3600",
+          upsert: false,
+        });
 
-    const { data, error } = await supabase.storage
-      .from("wedding-pictures")
-      .upload(`public/${imageFile.name}`, imageFile, {
-        cacheControl: "3600",
-        upsert: false,
-      });
-
-    if (error) {
-      toast.error(error.message);
-      return;
-    } else {
-      console.log("Uploaded:", data);
-      toast.success("Image uploaded succesfully!");
-
-      fetchImages();
+      if (error) {
+        console.error(error);
+      } else {
+        console.log(data);
+      }
     }
+
+    toast.update(toastId, {
+      render: "Images uploaded!",
+      type: "success",
+      isLoading: false,
+      autoClose: 2000,
+    });
+    fetchImages();
   };
 
   const handleImageUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setImageFile(file);
-      setPreview(URL.createObjectURL(file));
-    }
+    const files = Array.from(e.target.files);
+    setImageFiles(files);
+
+    const filePreviews = files.map((file) => URL.createObjectURL(file));
+    setPreviews(filePreviews);
   };
 
   async function fetchImages() {
@@ -74,10 +76,17 @@ const PhotoPage = () => {
   }
 
   function toggleAddImage() {
-    setImageFile(null);
-    setPreview(null);
+    setImageFiles([]);
+    setPreviews([]);
     setAddImage(!addImage);
   }
+
+  const handleRemovePreview = (indexToRemove) => {
+    const newFiles = imageFiles.filter((_, idx) => idx !== indexToRemove);
+    const newPreviews = previews.filter((_, idx) => idx !== indexToRemove);
+    setImageFiles(newFiles);
+    setPreviews(newPreviews);
+  };
 
   return (
     <div>
@@ -90,19 +99,18 @@ const PhotoPage = () => {
               ×
             </button>
 
-            {preview && (
-              <div className="preview-wrapper">
-                <img className="preview-image" src={preview} />
-                <button
-                  className="preview-remove"
-                  onClick={() => setPreview(null)}
-                >
-                  ×
-                </button>
+            {previews.length > 0 && (
+              <div className="preview-container">
+                {previews.map((src, i) => (
+                  <div className="preview-item" key={src}>
+                    <img src={src} alt={`preview-${i}`} />
+                    <button onClick={() => handleRemovePreview(i)}>×</button>
+                  </div>
+                ))}
               </div>
             )}
 
-            {preview && (
+            {previews.length > 0 && (
               <button className="upload-btn" onClick={uploadImage}>
                 Upload
               </button>
@@ -110,10 +118,11 @@ const PhotoPage = () => {
 
             <div className="file-input-wrapper">
               <label className="file-label">
-                Choose Image
+                Choose Images
                 <input
                   type="file"
                   accept="image/*"
+                  multiple
                   onChange={handleImageUpload}
                   className="file-input"
                 />
@@ -125,7 +134,7 @@ const PhotoPage = () => {
 
       <div className="image-grid">
         {images.map((url) => (
-          <img key={url} src={url} className="grid-image" />
+          <img key={url} src={url} className="grid-image" loading="lazy" />
         ))}
 
         <button className="fab-btn" onClick={toggleAddImage}>
