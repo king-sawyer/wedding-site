@@ -53,7 +53,7 @@ function App() {
             />
             <Route path="mini" element={<MiniCrossword />} />
             <Route path="/timeline" element={<Timeline />} />
-            <Route path="wordle" element={<Wordle />} />
+            <Route path="wordle" element={<Wordle userData={userData} />} />
             <Route path="photos" element={<PhotoPage />} />
             <Route path="/profile" element={<Profile userData={userData} />} />
           </Route>

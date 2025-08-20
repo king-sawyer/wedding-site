@@ -1,11 +1,14 @@
 import { useState, useEffect } from "react";
 import "./Wordle.css";
 
+import { supabase } from "../SupabaseClient";
+
 const WORD_LENGTH = 5;
 const MAX_ATTEMPTS = 6;
 const KEYBOARD_ROWS = ["QWERTYUIOP", "ASDFGHJKL", "ZXCVBNM"];
 
-const Wordle = () => {
+const Wordle = ({ userData }) => {
+  const user = userData;
   const [solution, setSolution] = useState("");
   const [guesses, setGuesses] = useState([]);
   const [currentGuess, setCurrentGuess] = useState("");
@@ -20,6 +23,42 @@ const Wordle = () => {
 
   useEffect(() => {
     setSolution("KINGS");
+
+    const fetchUserData = async () => {
+      const { data, error } = await supabase
+        .from("users")
+        .select("wordleGuesses")
+        .eq("uuid", user.userId)
+        .maybeSingle();
+
+      if (error) {
+        console.error(error);
+        return;
+      }
+
+      if (data && data.wordleGuesses) {
+        let savedGuesses = data.wordleGuesses;
+
+        if (typeof savedGuesses === "string") {
+          try {
+            savedGuesses = JSON.parse(savedGuesses);
+          } catch (err) {
+            console.error("Failed to parse wordleGuesses:", err);
+            savedGuesses = [];
+          }
+        }
+
+        setGuesses(savedGuesses);
+
+        savedGuesses.forEach((guess) => {
+          updateKeyStatuses(guess);
+        });
+      } else {
+        setGuesses([]);
+      }
+    };
+
+    fetchUserData();
   }, []);
 
   async function checkWord(word) {
@@ -59,7 +98,6 @@ const Wordle = () => {
 
     if (key === "ENTER" && currentGuess.length === WORD_LENGTH) {
       const isValid = await checkWord(currentGuess);
-
       if (!isValid) {
         const currentRow = guesses.length;
         setInvalidRow(currentRow);
@@ -67,29 +105,44 @@ const Wordle = () => {
         return;
       }
 
+      const newGuess = currentGuess.toUpperCase();
       setRevealingRow(guesses.length);
       setRevealingCol(0);
+
       let i = 0;
       const revealInterval = setInterval(() => {
         setRevealingCol(i);
         i++;
+
         if (i === WORD_LENGTH) {
           clearInterval(revealInterval);
+
+          setGuesses((prev) => {
+            const updatedGuesses = [...prev, newGuess];
+
+            supabase
+              .from("users")
+              .update({ wordleGuesses: updatedGuesses })
+              .eq("uuid", user.userId)
+              .then(({ error }) => {
+                if (error) console.error("Supabase update failed:", error);
+              });
+
+            return updatedGuesses;
+          });
+
+          updateKeyStatuses(newGuess);
           setRevealingRow(null);
           setRevealingCol(-1);
+          setCurrentGuess("");
+
+          if (newGuess === solution) {
+            setStatus("🎉 You Win!");
+          } else if (guesses.length + 1 === MAX_ATTEMPTS) {
+            setStatus(`❌ Game Over! The word was ${solution}`);
+          }
         }
       }, 400);
-
-      const newGuesses = [...guesses, currentGuess.toUpperCase()];
-      setGuesses(newGuesses);
-      updateKeyStatuses(currentGuess.toUpperCase());
-      setCurrentGuess("");
-
-      if (currentGuess.toUpperCase() === solution) {
-        setStatus("🎉 You Win!");
-      } else if (newGuesses.length === MAX_ATTEMPTS) {
-        setStatus(`❌ Game Over! The word was ${solution}`);
-      }
     } else if (key === "DEL") {
       setCurrentGuess(currentGuess.slice(0, -1));
     } else if (/^[A-Z]$/.test(key) && currentGuess.length < WORD_LENGTH) {
@@ -107,19 +160,25 @@ const Wordle = () => {
     return () => window.removeEventListener("keydown", listener);
   });
 
-  const getTileClass = (letter, index, rowComplete, rowIndex) => {
+  const getTileClass = (letter, index, rowComplete, rowIndex, isSavedGuess) => {
     let base = "tile";
+
     if (rowIndex === invalidRow) return base + " shake";
 
     if (rowIndex === revealingRow) {
       if (index > revealingCol) return base;
-    } else if (!rowComplete) {
-      return base;
+      if (solution[index] === letter) return base + " flip correct";
+      if (solution.includes(letter)) return base + " flip present";
+      return base + " flip absent";
     }
 
-    if (solution[index] === letter) return base + " flip correct";
-    if (solution.includes(letter)) return base + " flip present";
-    return base + " flip absent";
+    if (rowComplete || isSavedGuess) {
+      if (solution[index] === letter) return base + " correct";
+      if (solution.includes(letter)) return base + " present";
+      return base + " absent";
+    }
+
+    return base;
   };
 
   return (
@@ -131,6 +190,7 @@ const Wordle = () => {
           const guess =
             guesses[rowIdx] || (rowIdx === guesses.length ? currentGuess : "");
           const rowComplete = rowIdx < guesses.length;
+          const isSavedGuess = rowIdx < guesses.length;
           return (
             <div key={rowIdx} className="row">
               {[...Array(WORD_LENGTH)].map((_, colIdx) => {
@@ -142,7 +202,8 @@ const Wordle = () => {
                       letter,
                       colIdx,
                       rowComplete,
-                      rowIdx
+                      rowIdx,
+                      isSavedGuess
                     )}
                   >
                     {letter}
