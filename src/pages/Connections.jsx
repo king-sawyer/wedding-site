@@ -326,29 +326,34 @@ const Connections = ({ userData }) => {
                   }}
                 >
                   <p>Mistakes Remaining:</p>
+
                   <div
                     style={{
                       display: "flex",
-                      justifyContent: "space-between",
+                      justifyContent: "flex-start",
+                      alignItems: "center",
                       width: "80px",
                       marginLeft: "20px",
                     }}
                   >
-                    {Array.from({ length: attempts }).map((_, index) => (
-                      <div
-                        style={{
-                          backgroundColor: "#8a9a5b",
-                          borderRadius: "100%",
-                          height: "15px",
-                          width: "15px",
-                          top: "40%",
-                          position: "relative",
-                        }}
-                        key={index}
-                      ></div>
-                    ))}
+                    {Array.from({ length: attempts })
+                      .reverse()
+                      .map((_, index) => (
+                        <div
+                          style={{
+                            backgroundColor: "#8a9a5b",
+                            borderRadius: "50%",
+                            height: "15px",
+                            width: "15px",
+                            position: "relative",
+                            marginRight: "10px",
+                            flexShrink: 0,
+                          }}
+                          key={index}
+                        ></div>
+                      ))}
                   </div>
-                </div>{" "}
+                </div>
                 <button
                   onClick={rearrange}
                   style={{
