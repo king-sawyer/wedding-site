@@ -22,6 +22,8 @@ const Connections = ({ userData }) => {
   const [loading, setLoading] = useState(true);
   const [hasRevealed, setHasRevealed] = useState(false);
 
+  const [shake, setShake] = useState(false);
+
   const [correctlyGuessedCategories, setCorrectlyGuessedCategories] = useState(
     []
   );
@@ -166,6 +168,8 @@ const Connections = ({ userData }) => {
       setTimeout(() => setOneAway(false), 2000);
       setAttempts((attempts) => attempts - 1);
     } else {
+      setShake(true);
+      setTimeout(() => setShake(false), 500);
       setAttempts((attempts) => attempts - 1);
     }
 
@@ -191,6 +195,7 @@ const Connections = ({ userData }) => {
   };
 
   async function revealRemainingCategories() {
+    clearSelected();
     let remainingBoxes = [...boxes.data];
     const revealed = [];
 
@@ -271,6 +276,10 @@ const Connections = ({ userData }) => {
                           onClick={() => toggleBox(box.word)}
                           className={`connections-word ${
                             isSelected ? "active" : ""
+                          } ${
+                            selectedWords.includes(box.word) && shake
+                              ? "shake-animation"
+                              : ""
                           }`}
                         >
                           {box.word}
