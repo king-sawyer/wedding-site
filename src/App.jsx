@@ -46,7 +46,10 @@ function App() {
             />
             <Route path="leaderboard" element={<Leaderboard />} />
             <Route path="messages" element={<Messages />} />
-            <Route path="connections" element={<Connections />} />
+            <Route
+              path="connections"
+              element={<Connections userData={userData} />}
+            />
             <Route path="mini" element={<MiniCrossword />} />
             <Route path="wordle" element={<Wordle />} />
             <Route path="photos" element={<PhotoPage />} />
