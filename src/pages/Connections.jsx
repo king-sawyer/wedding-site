@@ -205,6 +205,8 @@ const Connections = ({ userData }) => {
   };
 
   async function revealRemainingCategories() {
+    await new Promise((res) => setTimeout(res, 2000));
+
     clearSelected();
     let remainingBoxes = [...boxes.data];
     const revealed = [];
@@ -233,7 +235,7 @@ const Connections = ({ userData }) => {
         color: color,
       });
 
-      await new Promise((res) => setTimeout(res, 1000));
+      await new Promise((res) => setTimeout(res, 1700));
     }
   }
 
