@@ -15,6 +15,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Profile from "./pages/Profile";
 import PhotoPage from "./pages/PhotoPage";
+import Timeline from "./pages/Timeline";
 
 function App() {
   const [userData, setUserData] = useState(
@@ -51,6 +52,7 @@ function App() {
               element={<Connections userData={userData} />}
             />
             <Route path="mini" element={<MiniCrossword />} />
+            <Route path="/timeline" element={<Timeline />} />
             <Route path="wordle" element={<Wordle />} />
             <Route path="photos" element={<PhotoPage />} />
             <Route path="/profile" element={<Profile userData={userData} />} />

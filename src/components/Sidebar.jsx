@@ -192,6 +192,14 @@ export default function Sidebar() {
             </ListItemButton>
           </ListItem>
         </List>
+        <Divider />
+        <List>
+          <ListItem>
+            <ListItemButton component={Link} to="/timeline">
+              TIMELINE
+            </ListItemButton>
+          </ListItem>
+        </List>
       </Drawer>
       <Main open={open}>
         <DrawerHeader />
