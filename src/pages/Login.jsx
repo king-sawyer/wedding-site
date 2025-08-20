@@ -19,6 +19,7 @@ const Login = ({ setUserData }) => {
       firstName: data.first,
       lastName: data.last,
       uuid: data.userId,
+      connectionsAttempts: 4,
     });
 
     if (error) {
