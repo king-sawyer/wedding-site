@@ -164,6 +164,10 @@ const Connections = ({ userData }) => {
       counts[Object.keys(counts)[1]] == 3
     ) {
       console.log("Ooh so close");
+
+      setShake(true);
+      setTimeout(() => setShake(false), 500);
+
       setOneAway(true);
       setTimeout(() => setOneAway(false), 2000);
       setAttempts((attempts) => attempts - 1);
