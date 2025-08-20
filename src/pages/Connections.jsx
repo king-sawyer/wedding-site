@@ -137,6 +137,10 @@ const Connections = ({ userData }) => {
 
       console.log("Yay!");
 
+      setBoxes((prevBoxes) => ({
+        data: prevBoxes.data.filter((box) => !selectedWords.includes(box.word)),
+      }));
+
       setCorrectlyGuessedCategories((prev) => [
         ...prev,
         {
@@ -152,10 +156,6 @@ const Connections = ({ userData }) => {
         words: selectedWords,
         color: categoryColor,
       });
-
-      setBoxes((prevBoxes) => ({
-        data: prevBoxes.data.filter((box) => !selectedWords.includes(box.word)),
-      }));
 
       setSelectedWords([]);
       setNumCorrect((numCorrect) => ++numCorrect);
