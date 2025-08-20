@@ -24,6 +24,8 @@ const Connections = ({ userData }) => {
 
   const [shake, setShake] = useState(false);
 
+  const [playing, setPlaying] = useState(true);
+
   const [correctlyGuessedCategories, setCorrectlyGuessedCategories] = useState(
     []
   );
@@ -67,8 +69,6 @@ const Connections = ({ userData }) => {
       if (error) {
         console.error(error);
         return;
-      } else {
-        console.log(userData[0]);
       }
 
       setAttempts(userData[0].connectionsAttempts);
@@ -89,6 +89,12 @@ const Connections = ({ userData }) => {
     }
     if (!loading) updateSupabaseAttempts();
   }, [attempts]);
+
+  useEffect(() => {
+    if (correctlyGuessedCategories.length == 4) {
+      setPlaying(false);
+    }
+  }, [correctlyGuessedCategories]);
 
   const rearrange = () => {
     const shuffled = [...boxes.data].sort(() => Math.random() - 0.5);
@@ -295,90 +301,99 @@ const Connections = ({ userData }) => {
             )}
           </div>
 
-          <div>
+          <div className="controls">
             {" "}
-            <div className={`fade-div ${alreadyGuessed ? "visible" : ""}`}>
-              Already Guessed!
-            </div>
-            <div className={`fade-div ${oneAway ? "visible" : ""}`}>
-              One away...
-            </div>
-          </div>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignContent: "center",
-            }}
-          >
-            <p>Mistakes Remaining:</p>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                width: "80px",
-                marginLeft: "20px",
-              }}
-            >
-              {Array.from({ length: attempts }).map((_, index) => (
+            {playing ? (
+              <div>
+                <div>
+                  {" "}
+                  <div
+                    className={`fade-div ${alreadyGuessed ? "visible" : ""}`}
+                  >
+                    Already Guessed!
+                  </div>
+                  <div className={`fade-div ${oneAway ? "visible" : ""}`}>
+                    One away...
+                  </div>
+                </div>
                 <div
                   style={{
-                    backgroundColor: "#8a9a5b",
-                    borderRadius: "100%",
-                    height: "15px",
-                    width: "15px",
-                    top: "40%",
-                    position: "relative",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignContent: "center",
                   }}
-                  key={index}
-                ></div>
-              ))}
-            </div>
-          </div>
-
-          <div className="controls">
-            <button
-              onClick={rearrange}
-              style={{
-                padding: "8px 16px",
-                fontSize: "clamp(12px, 4vw, 16px)",
-                borderRadius: "100px",
-                backgroundColor: "#555",
-                color: "white",
-                border: "2px solid white",
-                margin: "10px",
-              }}
-            >
-              Shuffle
-            </button>
-            <button
-              onClick={clearSelected}
-              style={{
-                padding: "8px 16px",
-                fontSize: "clamp(12px, 4vw, 16px)",
-                borderRadius: "100px",
-                backgroundColor: "#555",
-                color: selectedWords.length ? "white" : "gray",
-                border: selectedWords.length ? "2px solid white" : "none",
-                margin: "10px",
-              }}
-            >
-              Deselect All
-            </button>
-            <button
-              onClick={checkAttempt}
-              style={{
-                padding: "8px 16px",
-                fontSize: "clamp(12px, 4vw, 16px)",
-                borderRadius: "100px",
-                backgroundColor: "#555",
-                color: selectedWords.length == 4 ? "white" : "gray",
-                border: selectedWords.length == 4 ? "2px solid white" : "none",
-                margin: "10px",
-              }}
-            >
-              Submit
-            </button>
+                >
+                  <p>Mistakes Remaining:</p>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      width: "80px",
+                      marginLeft: "20px",
+                    }}
+                  >
+                    {Array.from({ length: attempts }).map((_, index) => (
+                      <div
+                        style={{
+                          backgroundColor: "#8a9a5b",
+                          borderRadius: "100%",
+                          height: "15px",
+                          width: "15px",
+                          top: "40%",
+                          position: "relative",
+                        }}
+                        key={index}
+                      ></div>
+                    ))}
+                  </div>
+                </div>{" "}
+                <button
+                  onClick={rearrange}
+                  style={{
+                    padding: "8px 16px",
+                    fontSize: "clamp(12px, 4vw, 16px)",
+                    borderRadius: "100px",
+                    backgroundColor: "#555",
+                    color: "white",
+                    border: "2px solid white",
+                    margin: "10px",
+                  }}
+                >
+                  Shuffle
+                </button>
+                <button
+                  onClick={clearSelected}
+                  style={{
+                    padding: "8px 16px",
+                    fontSize: "clamp(12px, 4vw, 16px)",
+                    borderRadius: "100px",
+                    backgroundColor: "#555",
+                    color: selectedWords.length ? "white" : "gray",
+                    border: selectedWords.length ? "2px solid white" : "none",
+                    margin: "10px",
+                  }}
+                >
+                  Deselect All
+                </button>
+                <button
+                  onClick={checkAttempt}
+                  style={{
+                    padding: "8px 16px",
+                    fontSize: "clamp(12px, 4vw, 16px)",
+                    borderRadius: "100px",
+                    backgroundColor: "#555",
+                    color: selectedWords.length == 4 ? "white" : "gray",
+                    border:
+                      selectedWords.length == 4 ? "2px solid white" : "none",
+                    margin: "10px",
+                  }}
+                >
+                  Submit
+                </button>{" "}
+              </div>
+            ) : (
+              <></>
+            )}
           </div>
         </div>
       )}
