@@ -50,8 +50,9 @@ const Wordle = ({ userData }) => {
 
         setGuesses(savedGuesses);
 
+        let combinedStatuses = {};
         savedGuesses.forEach((guess) => {
-          updateKeyStatuses(guess);
+          updateKeyStatuses(guess, combinedStatuses);
         });
       } else {
         setGuesses([]);
@@ -73,8 +74,8 @@ const Wordle = ({ userData }) => {
     }
   }
 
-  const updateKeyStatuses = (guess) => {
-    const newStatuses = { ...keyStatuses };
+  const updateKeyStatuses = (guess, prevStatuses = {}) => {
+    const newStatuses = { ...prevStatuses };
 
     guess.split("").forEach((letter, i) => {
       if (solution[i] === letter) {
@@ -112,11 +113,12 @@ const Wordle = ({ userData }) => {
       let i = 0;
       const revealInterval = setInterval(() => {
         setRevealingCol(i);
-        i++;
 
-        if (i === WORD_LENGTH) {
+        if (i === WORD_LENGTH - 1) {
+          // last letter
           clearInterval(revealInterval);
 
+          // Add guess after last flip
           setGuesses((prev) => {
             const updatedGuesses = [...prev, newGuess];
 
@@ -142,6 +144,8 @@ const Wordle = ({ userData }) => {
             setStatus(`❌ Game Over! The word was ${solution}`);
           }
         }
+
+        i++;
       }, 400);
     } else if (key === "DEL") {
       setCurrentGuess(currentGuess.slice(0, -1));
