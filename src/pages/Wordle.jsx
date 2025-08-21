@@ -15,7 +15,6 @@ const Wordle = ({ userData }) => {
   const [status, setStatus] = useState("");
   const [keyStatuses, setKeyStatuses] = useState({});
 
-  // const [isChecking, setIsChecking] = useState(false); // show spinner
   const [revealingRow, setRevealingRow] = useState(null);
   const [revealingCol, setRevealingCol] = useState(-1);
 
@@ -38,7 +37,6 @@ const Wordle = ({ userData }) => {
 
       if (data && data.wordleGuesses) {
         let savedGuesses = data.wordleGuesses;
-
         if (typeof savedGuesses === "string") {
           try {
             savedGuesses = JSON.parse(savedGuesses);
@@ -49,18 +47,22 @@ const Wordle = ({ userData }) => {
         }
 
         setGuesses(savedGuesses);
-
-        let combinedStatuses = {};
-        savedGuesses.forEach((guess) => {
-          updateKeyStatuses(guess, combinedStatuses);
-        });
       } else {
         setGuesses([]);
       }
     };
 
     fetchUserData();
-  }, []);
+  }, [user.userId]);
+
+  useEffect(() => {
+    if (!solution) return;
+    let combined = {};
+    for (const g of guesses) {
+      combined = computeKeyStatuses(String(g).toUpperCase(), combined);
+    }
+    setKeyStatuses(combined);
+  }, [solution, guesses]);
 
   async function checkWord(word) {
     const url = `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`;
@@ -69,12 +71,12 @@ const Wordle = ({ userData }) => {
       if (!response.ok) return false;
       const result = await response.json();
       return result && result.length > 0;
-    } catch (error) {
+    } catch {
       return false;
     }
   }
 
-  const updateKeyStatuses = (guess, prevStatuses = {}) => {
+  const computeKeyStatuses = (guess, prevStatuses = {}) => {
     const newStatuses = { ...prevStatuses };
 
     guess.split("").forEach((letter, i) => {
@@ -91,14 +93,14 @@ const Wordle = ({ userData }) => {
       }
     });
 
-    setKeyStatuses(newStatuses);
+    return newStatuses;
   };
 
   const handleKeyPress = async (key) => {
     if (status) return;
 
     if (key === "ENTER" && currentGuess.length === WORD_LENGTH) {
-      const isValid = await checkWord(currentGuess);
+      const isValid = await checkWord(currentGuess.toLowerCase()); // case-safe
       if (!isValid) {
         const currentRow = guesses.length;
         setInvalidRow(currentRow);
@@ -115,34 +117,33 @@ const Wordle = ({ userData }) => {
         setRevealingCol(i);
 
         if (i === WORD_LENGTH - 1) {
-          // last letter
           clearInterval(revealInterval);
 
-          // Add guess after last flip
-          setGuesses((prev) => {
-            const updatedGuesses = [...prev, newGuess];
+          setTimeout(() => {
+            setGuesses((prev) => {
+              const updatedGuesses = [...prev, newGuess];
 
-            supabase
-              .from("users")
-              .update({ wordleGuesses: updatedGuesses })
-              .eq("uuid", user.userId)
-              .then(({ error }) => {
-                if (error) console.error("Supabase update failed:", error);
-              });
+              supabase
+                .from("users")
+                .update({ wordleGuesses: updatedGuesses })
+                .eq("uuid", user.userId)
+                .then(({ error }) => {
+                  if (error) console.error("Supabase update failed:", error);
+                });
 
-            return updatedGuesses;
-          });
+              return updatedGuesses;
+            });
 
-          updateKeyStatuses(newGuess);
-          setRevealingRow(null);
-          setRevealingCol(-1);
-          setCurrentGuess("");
+            setRevealingRow(null);
+            setRevealingCol(-1);
+            setCurrentGuess("");
 
-          if (newGuess === solution) {
-            setStatus("🎉 You Win!");
-          } else if (guesses.length + 1 === MAX_ATTEMPTS) {
-            setStatus(`❌ Game Over! The word was ${solution}`);
-          }
+            if (newGuess === solution) {
+              setStatus("🎉 You Win!");
+            } else if (guesses.length + 1 === MAX_ATTEMPTS) {
+              setStatus(`❌ Game Over! The word was ${solution}`);
+            }
+          }, 400);
         }
 
         i++;
@@ -187,7 +188,7 @@ const Wordle = ({ userData }) => {
 
   return (
     <div className="wordle-container">
-      <h1 className="title">Wordle Clone</h1>
+      <h1 className="title">Wordle</h1>
 
       <div className="board">
         {[...Array(MAX_ATTEMPTS)].map((_, rowIdx) => {
@@ -218,8 +219,6 @@ const Wordle = ({ userData }) => {
           );
         })}
       </div>
-
-      {status && <p className="status">{status}</p>}
 
       <div className="keyboard">
         {KEYBOARD_ROWS.map((row, i) => (
