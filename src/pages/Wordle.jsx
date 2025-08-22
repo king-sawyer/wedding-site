@@ -3,6 +3,7 @@ import "./Wordle.css";
 
 import { supabase } from "../SupabaseClient";
 import { toast } from "react-toastify";
+import { ClipLoader } from "react-spinners";
 
 const WORD_LENGTH = 5;
 const MAX_ATTEMPTS = 6;
@@ -21,10 +22,16 @@ const Wordle = ({ userData }) => {
 
   const [invalidRow, setInvalidRow] = useState(null);
 
+  const [winner, setWinner] = useState(false);
+  const [gameOver, setGameOver] = useState(false);
+
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     setSolution("KINGS");
 
     const fetchUserData = async () => {
+      setLoading(true);
       const { data, error } = await supabase
         .from("users")
         .select("wordleGuesses")
@@ -51,6 +58,7 @@ const Wordle = ({ userData }) => {
       } else {
         setGuesses([]);
       }
+      setLoading(false);
     };
 
     fetchUserData();
@@ -63,6 +71,13 @@ const Wordle = ({ userData }) => {
       combined = computeKeyStatuses(String(g).toUpperCase(), combined);
     }
     setKeyStatuses(combined);
+
+    if (guesses.includes(solution)) {
+      setWinner(true);
+      setGameOver(true);
+    } else if (guesses.length > 5 && !guesses.includes(solution)) {
+      setGameOver(true);
+    }
   }, [solution, guesses]);
 
   async function checkWord(word) {
@@ -150,9 +165,12 @@ const Wordle = ({ userData }) => {
             setCurrentGuess("");
 
             if (newGuess === solution) {
+              setWinner(true);
+              setGameOver(true);
               setStatus("🎉 You Win!");
             } else if (guesses.length + 1 === MAX_ATTEMPTS) {
               setStatus(`❌ Game Over! The word was ${solution}`);
+              setGameOver(true);
             }
           }, 400);
         }
@@ -201,67 +219,119 @@ const Wordle = ({ userData }) => {
     <div className="wordle-container">
       <h1 className="title">Wordle</h1>
 
-      <div className="board">
-        {[...Array(MAX_ATTEMPTS)].map((_, rowIdx) => {
-          const guess =
-            guesses[rowIdx] || (rowIdx === guesses.length ? currentGuess : "");
-          const rowComplete = rowIdx < guesses.length;
-          const isSavedGuess = rowIdx < guesses.length;
-          return (
-            <div key={rowIdx} className="row">
-              {[...Array(WORD_LENGTH)].map((_, colIdx) => {
-                const letter = guess[colIdx] || "";
-                return (
-                  <div
-                    key={colIdx}
-                    className={getTileClass(
-                      letter,
-                      colIdx,
-                      rowComplete,
-                      rowIdx,
-                      isSavedGuess
+      {loading ? (
+        <div style={{ margin: "auto" }}>
+          <ClipLoader
+            color={"#5a86ad"}
+            loading={true}
+            size={150}
+            aria-label="Loading Spinner"
+            data-testid="loader"
+          />
+        </div>
+      ) : (
+        <>
+          <div className="board">
+            {[...Array(MAX_ATTEMPTS)].map((_, rowIdx) => {
+              const guess =
+                guesses[rowIdx] ||
+                (rowIdx === guesses.length ? currentGuess : "");
+              const rowComplete = rowIdx < guesses.length;
+              const isSavedGuess = rowIdx < guesses.length;
+              return (
+                <div key={rowIdx} className="row">
+                  {[...Array(WORD_LENGTH)].map((_, colIdx) => {
+                    const letter = guess[colIdx] || "";
+                    return (
+                      <div
+                        key={colIdx}
+                        className={getTileClass(
+                          letter,
+                          colIdx,
+                          rowComplete,
+                          rowIdx,
+                          isSavedGuess
+                        )}
+                      >
+                        {letter}
+                      </div>
+                    );
+                  })}
+                </div>
+              );
+            })}
+          </div>
+
+          {gameOver ? (
+            <div className="backdrop">
+              <div>
+                {winner ? (
+                  <div className="modal">
+                    {" "}
+                    {guesses.length == 1 ? (
+                      <>
+                        {" "}
+                        <h2>✅ You did it! ✅</h2>{" "}
+                        <p>Wow! On your first try!</p> <p>You are the best!</p>{" "}
+                        <p>We love you ❤️</p>
+                      </>
+                    ) : (
+                      <>
+                        {" "}
+                        <h2>✅ You did it! ✅</h2>{" "}
+                        <p>It took you: {guesses.length} tries!</p>{" "}
+                        <p>You are the best! 😍</p>{" "}
+                      </>
                     )}
+                  </div>
+                ) : (
+                  <div className="modal">
+                    <h2>❌ So close! ❌</h2>
+                    <div>
+                      You (probably) almost had it with: <p>{guesses[5]}!</p>
+                    </div>{" "}
+                    <p>We still love you ❤️‍🩹</p>{" "}
+                  </div>
+                )}
+              </div>
+            </div>
+          ) : (
+            <></>
+          )}
+
+          <div className="keyboard">
+            {KEYBOARD_ROWS.map((row, i) => (
+              <div key={i} className="keyboard-row">
+                {i === 2 && (
+                  <button
+                    className="key wide"
+                    onClick={() => handleKeyPress("ENTER")}
+                  >
+                    Enter
+                  </button>
+                )}
+                {row.split("").map((letter) => (
+                  <button
+                    key={letter}
+                    className={`key ${keyStatuses[letter] || ""}`}
+                    onClick={() => handleKeyPress(letter)}
                   >
                     {letter}
-                  </div>
-                );
-              })}
-            </div>
-          );
-        })}
-      </div>
-
-      <div className="keyboard">
-        {KEYBOARD_ROWS.map((row, i) => (
-          <div key={i} className="keyboard-row">
-            {i === 2 && (
-              <button
-                className="key wide"
-                onClick={() => handleKeyPress("ENTER")}
-              >
-                Enter
-              </button>
-            )}
-            {row.split("").map((letter) => (
-              <button
-                key={letter}
-                className={`key ${keyStatuses[letter] || ""}`}
-                onClick={() => handleKeyPress(letter)}
-              >
-                {letter}
-              </button>
+                  </button>
+                ))}
+                {i === 2 && (
+                  <button
+                    className="key wide"
+                    onClick={() => handleKeyPress("DEL")}
+                  >
+                    ⌫
+                  </button>
+                )}
+              </div>
             ))}
-            {i === 2 && (
-              <button
-                className="key wide"
-                onClick={() => handleKeyPress("DEL")}
-              >
-                ⌫
-              </button>
-            )}
           </div>
-        ))}
-      </div>
+        </>
+      )}
     </div>
   );
 };
