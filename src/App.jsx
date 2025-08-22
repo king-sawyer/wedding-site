@@ -46,7 +46,7 @@ function App() {
               }
             />
             <Route path="leaderboard" element={<Leaderboard />} />
-            <Route path="messages" element={<Messages />} />
+            <Route path="messages" element={<Messages userData={userData} />} />
             <Route
               path="connections"
               element={<Connections userData={userData} />}
