@@ -78,6 +78,7 @@
   margin: 2px;
   padding: 14px 10px;
   min-width: unset; /* remove fixed min */
+  background-color: #5a86ad !important;
 }
 .key.wide {
   flex: 1.5; /* make Enter/Del wider */
