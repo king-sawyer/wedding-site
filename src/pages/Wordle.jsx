@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import "./Wordle.css";
 
 import { supabase } from "../SupabaseClient";
+import { toast } from "react-toastify";
 
 const WORD_LENGTH = 5;
 const MAX_ATTEMPTS = 6;
@@ -100,11 +101,21 @@ const Wordle = ({ userData }) => {
     if (status) return;
 
     if (key === "ENTER" && currentGuess.length === WORD_LENGTH) {
-      const isValid = await checkWord(currentGuess.toLowerCase()); // case-safe
+      const isValid = await checkWord(currentGuess.toLowerCase());
       if (!isValid) {
         const currentRow = guesses.length;
         setInvalidRow(currentRow);
         setTimeout(() => setInvalidRow(null), 600);
+        toast.error("Word not found in word list 😞", {
+          position: "bottom-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
         return;
       }
 
