@@ -188,7 +188,11 @@ const PhotoPage = () => {
                   <img
                     key={imagePopup}
                     src={imagePopup}
-                    style={{ width: "100%" }}
+                    style={{
+                      width: "100%",
+                      borderRadius: "6px",
+                      boxShadow: "0 6px 18px rgba(0, 0, 0, 0.2)",
+                    }}
                   />
                   <p className="save-hint">
                     📌 Tap & Hold the image to Save to Photos
