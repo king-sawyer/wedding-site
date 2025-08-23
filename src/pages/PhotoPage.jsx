@@ -190,9 +190,9 @@ const PhotoPage = () => {
                     src={imagePopup}
                     style={{ width: "100%" }}
                   />
-                  <a href={imagePopup} download className="download-btn">
-                    Save
-                  </a>
+                  <p className="save-hint">
+                    📌 Tap & Hold the image to Save to Photos
+                  </p>
                 </div>
               </div>
             </>
