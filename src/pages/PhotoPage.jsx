@@ -8,12 +8,14 @@ import { toast } from "react-toastify";
 import "./photopage.css";
 
 const PhotoPage = () => {
-  const [imageFiles, setImageFiles] = useState([]); // store multiple File objects
-  const [previews, setPreviews] = useState([]); // store preview URLs
+  const [imageFiles, setImageFiles] = useState([]);
+  const [previews, setPreviews] = useState([]);
   const [images, setImages] = useState([]);
   const [addImage, setAddImage] = useState(false);
 
   const [loading, setLoading] = useState(false);
+
+  const [imageOrientations, setImageOrientations] = useState({});
 
   useEffect(() => {
     fetchImages();
@@ -59,6 +61,14 @@ const PhotoPage = () => {
     const filePreviews = files.map((file) => URL.createObjectURL(file));
     setPreviews(filePreviews);
     setLoading(false);
+  };
+
+  const handleImageLoad = (e, url) => {
+    const { naturalWidth, naturalHeight } = e.target;
+    setImageOrientations((prev) => ({
+      ...prev,
+      [url]: naturalWidth > naturalHeight ? "landscape" : "portrait",
+    }));
   };
 
   async function fetchImages() {
@@ -156,7 +166,12 @@ const PhotoPage = () => {
 
           <div className="image-grid">
             {images.map((url) => (
-              <img key={url} src={url} className="grid-image" />
+              <img
+                key={url}
+                src={url}
+                onLoad={(e) => handleImageLoad(e, url)}
+                className={`grid-image ${imageOrientations[url] || ""}`}
+              />
             ))}
 
             <button className="fab-btn" onClick={toggleAddImage}>

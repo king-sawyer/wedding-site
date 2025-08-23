@@ -21,8 +21,8 @@
   align-items: center;
   z-index: 10;
   min-width: 330px;
-  max-width: 90vw; /* <--- Add this */
-  max-height: 90vh; /* <--- Add this so everything stays inside */
+  max-width: 90vw;
+  max-height: 90vh;
   overflow: hidden;
 }
 
@@ -65,9 +65,9 @@
 }
 
 .preview-container {
-  width: 100%; /* <--- Force container to stay within modal */
+  width: 100%;
   max-width: 100%;
-  height: 350px; /* Fixed height */
+  height: 350px;
   overflow-x: auto;
   overflow-y: hidden;
   display: flex;
@@ -143,6 +143,16 @@
   border-radius: 8px;
 }
 
+.grid-image.portrait {
+  width: 150px;
+  height: 200px;
+}
+
+.grid-image.landscape {
+  width: 200px;
+  height: 150px;
+}
+
 .fab-btn {
   border-radius: 100%;
   font-weight: bold;
@@ -156,9 +166,3 @@
   right: 20px;
   cursor: pointer;
 }
-
-/* .loading-div {
-  position: relative;
-  margin-bottom: 15px;
-  color: black;
-} */
