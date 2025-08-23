@@ -52,11 +52,13 @@ const PhotoPage = () => {
   };
 
   const handleImageUpload = (e) => {
+    setLoading(true);
     const files = Array.from(e.target.files);
     setImageFiles(files);
 
     const filePreviews = files.map((file) => URL.createObjectURL(file));
     setPreviews(filePreviews);
+    setLoading(false);
   };
 
   async function fetchImages() {
