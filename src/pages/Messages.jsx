@@ -71,6 +71,7 @@ const Messages = ({ userData }) => {
   ];
 
   const fetchMessages = async () => {
+    setLoading(true);
     const { data, error } = await supabase
       .from("messages")
       .select("*")
@@ -85,12 +86,11 @@ const Messages = ({ userData }) => {
   };
 
   const handleAddMessage = async () => {
-    console.log(messageText);
     if (messageText) {
       const { data, error } = await supabase
         .from("messages")
         .insert([
-          { message: messageText, name: user.first, uuid: user.usedId },
+          { message: messageText, name: user.first, uuid: user.userId },
         ]);
 
       if (error) {
@@ -139,7 +139,23 @@ const Messages = ({ userData }) => {
         fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
       }}
     >
-      <h2 style={{ textAlign: "center", color: "#5a86ad" }}>Messages</h2>
+      <div
+        style={{
+          width: "100%",
+          display: "flex",
+          flexDirection: "row",
+          alignContent: "space-around",
+          alignItems: "center",
+        }}
+      >
+        <h2 style={{ flex: "1", textAlign: "center", color: "#5a86ad" }}>
+          Messages
+        </h2>{" "}
+        {/* <p style={{ flex: "1", fontSize: "30px" }}>🔄</p> */}
+        <button onClick={fetchMessages} style={{ flex: "0.25" }}>
+          Refresh
+        </button>
+      </div>
       {messages.length === 0 ? (
         <p style={{ textAlign: "center", color: "#666" }}>No messages yet.</p>
       ) : (
@@ -174,7 +190,6 @@ const Messages = ({ userData }) => {
           ))}
         </ul>
       )}
-
       {addMessage && (
         <>
           <div className="backdrop" onClick={toggleAddMessage} />
@@ -216,7 +231,6 @@ const Messages = ({ userData }) => {
           </div>
         </>
       )}
-
       <div
         onClick={toggleAddMessage}
         style={{
