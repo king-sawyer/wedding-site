@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../SupabaseClient";
 
+import { ClipLoader } from "react-spinners";
+
 import { toast } from "react-toastify";
 
 import "./photopage.css";
@@ -10,6 +12,8 @@ const PhotoPage = () => {
   const [previews, setPreviews] = useState([]); // store preview URLs
   const [images, setImages] = useState([]);
   const [addImage, setAddImage] = useState(false);
+
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetchImages();
@@ -56,6 +60,7 @@ const PhotoPage = () => {
   };
 
   async function fetchImages() {
+    setLoading(true);
     const { data, error } = await supabase.storage
       .from("wedding-pictures")
       .list("public", { limit: 100 });
@@ -73,6 +78,7 @@ const PhotoPage = () => {
     });
 
     setImages(urls);
+    setLoading(false);
   }
 
   function toggleAddImage() {
@@ -90,57 +96,73 @@ const PhotoPage = () => {
 
   return (
     <div>
-      {addImage && (
-        <>
-          <div className="backdrop" />
+      {loading ? (
+        <div>
+          <ClipLoader
+            color={"#5a86ad"}
+            loading={true}
+            size={150}
+            aria-label="Loading Spinner"
+            data-testid="loader"
+          />
+        </div>
+      ) : (
+        <div>
+          {addImage && (
+            <>
+              <div className="backdrop" onClick={toggleAddImage} />
 
-          <div className="modal">
-            <button className="modal-close" onClick={toggleAddImage}>
-              ×
-            </button>
+              <div className="modal">
+                <button className="modal-close" onClick={toggleAddImage}>
+                  ×
+                </button>
 
-            {previews.length > 0 && (
-              <div className="preview-container">
-                {previews.map((src, i) => (
-                  <div className="preview-item" key={src}>
-                    <img src={src} alt={`preview-${i}`} />
-                    <button onClick={() => handleRemovePreview(i)}>×</button>
+                {previews.length > 0 && (
+                  <div className="preview-container">
+                    {previews.map((src, i) => (
+                      <div className="preview-item" key={src}>
+                        <img src={src} alt={`preview-${i}`} />
+                        <button onClick={() => handleRemovePreview(i)}>
+                          ×
+                        </button>
+                      </div>
+                    ))}
                   </div>
-                ))}
+                )}
+
+                {previews.length > 0 && (
+                  <button className="upload-btn" onClick={uploadImage}>
+                    Upload
+                  </button>
+                )}
+
+                <div className="file-input-wrapper">
+                  <label className="file-label">
+                    Choose Images
+                    <input
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      onChange={handleImageUpload}
+                      className="file-input"
+                    />
+                  </label>
+                </div>
               </div>
-            )}
+            </>
+          )}
 
-            {previews.length > 0 && (
-              <button className="upload-btn" onClick={uploadImage}>
-                Upload
-              </button>
-            )}
+          <div className="image-grid">
+            {images.map((url) => (
+              <img key={url} src={url} className="grid-image" />
+            ))}
 
-            <div className="file-input-wrapper">
-              <label className="file-label">
-                Choose Images
-                <input
-                  type="file"
-                  accept="image/*"
-                  multiple
-                  onChange={handleImageUpload}
-                  className="file-input"
-                />
-              </label>
-            </div>
+            <button className="fab-btn" onClick={toggleAddImage}>
+              +
+            </button>
           </div>
-        </>
+        </div>
       )}
-
-      <div className="image-grid">
-        {images.map((url) => (
-          <img key={url} src={url} className="grid-image" loading="lazy" />
-        ))}
-
-        <button className="fab-btn" onClick={toggleAddImage}>
-          +
-        </button>
-      </div>
     </div>
   );
 };
