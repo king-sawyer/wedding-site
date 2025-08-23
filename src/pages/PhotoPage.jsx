@@ -16,6 +16,8 @@ const PhotoPage = () => {
   const [loading, setLoading] = useState(false);
 
   const [imageOrientations, setImageOrientations] = useState({});
+  const [displayImage, setDisplayImage] = useState(false);
+  const [imagePopup, setImagePopup] = useState(null);
 
   useEffect(() => {
     fetchImages();
@@ -51,6 +53,15 @@ const PhotoPage = () => {
       autoClose: 2000,
     });
     fetchImages();
+  };
+
+  const displayImagePopup = (url) => {
+    setImagePopup(url);
+    setDisplayImage(true);
+  };
+
+  const closePopup = () => {
+    setDisplayImage(false);
   };
 
   const handleImageUpload = (e) => {
@@ -164,9 +175,32 @@ const PhotoPage = () => {
             </>
           )}
 
+          {displayImage ? (
+            <>
+              <div className="backdrop" onClick={closePopup} />
+
+              <div className="modal">
+                <button className="modal-close" onClick={closePopup}>
+                  ×
+                </button>
+
+                <div>
+                  <img
+                    key={imagePopup}
+                    src={imagePopup}
+                    style={{ width: "100%" }}
+                  />
+                </div>
+              </div>
+            </>
+          ) : (
+            <></>
+          )}
+
           <div className="image-grid">
             {images.map((url) => (
               <img
+                onClick={() => displayImagePopup(url)}
                 key={url}
                 src={url}
                 onLoad={(e) => handleImageLoad(e, url)}
