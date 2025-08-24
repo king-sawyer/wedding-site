@@ -286,8 +286,13 @@ const Wordle = ({ userData }) => {
                   </div>
                 ) : (
                   <div className="modal">
-                    <h2>❌ So close! ❌</h2>
-                    <div>
+                    <h2>❌ So CLOSE! ❌</h2>
+                    <div
+                      style={{
+                        fontFamily:
+                          "system-ui, Avenir, Helvetica, Arial, sans-serif;",
+                      }}
+                    >
                       You (probably) almost had it with: <p>{guesses[5]}!</p>
                     </div>{" "}
                     <p>We still love you ❤️‍🩹</p>{" "}

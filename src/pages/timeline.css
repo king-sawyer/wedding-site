@@ -10,6 +10,8 @@
 }
 
 .timeline-container h1 {
+  font-family: titleFont;
+
   margin-top: 0;
   font-size: 2.2rem;
   text-align: center;

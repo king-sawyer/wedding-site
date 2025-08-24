@@ -1,5 +1,14 @@
+@font-face {
+  font-family: "titleFont";
+  src: local("titleFont"),
+    url("./fonts/VTCCarrie-Regular.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  /* font-family: titleFont, Arial, Helvetica, sans-serif; */
   line-height: 1.5;
   font-weight: 400;
 
@@ -33,8 +42,18 @@ body {
 }
 
 h1 {
+  font-family: titleFont;
+
   font-size: 3.2em;
   line-height: 1.1;
+}
+
+h2 {
+  font-family: titleFont;
+}
+
+h3 {
+  font-family: titleFont;
 }
 
 button {

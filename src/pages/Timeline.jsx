@@ -3,8 +3,8 @@ import "./timeline.css";
 const Timeline = () => {
   return (
     <div className="timeline-container">
-      <h1>Timeline</h1>
-      <h3>Below is a rough timeline for the evening:</h3>
+      <h1>TIMELINE</h1>
+      <h3>BELOW IS A TIMELINE FOR THE EVENING</h3>
       <p>(Times provided are rough estimates)</p>
       <ul className="timeline-list">
         <li>
