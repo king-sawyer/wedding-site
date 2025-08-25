@@ -158,7 +158,7 @@
   align-items: center;
   z-index: 10;
   min-width: 330px;
-  max-width: 90vw; /* <--- Add this */
-  max-height: 90vh; /* <--- Add this so everything stays inside */
+  max-width: 90vw;
+  max-height: 90vh;
   overflow: hidden;
 }

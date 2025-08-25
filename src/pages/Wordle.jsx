@@ -217,7 +217,7 @@ const Wordle = ({ userData }) => {
 
   return (
     <div className="wordle-container">
-      <h1 className="title">Wordle</h1>
+      <h1 className="title">WORDLE</h1>
 
       {loading ? (
         <div style={{ margin: "auto" }}>

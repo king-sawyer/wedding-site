@@ -56,6 +56,7 @@ const AppBar = styled(MuiAppBar, {
     {
       props: ({ open }) => open,
       style: {
+        fontFamily: "titleFont",
         width: `calc(100% - ${drawerWidth}px)`,
         marginLeft: `${drawerWidth}px`,
         transition: theme.transitions.create(["margin", "width"], {
@@ -120,7 +121,7 @@ export default function Sidebar() {
               width: "100%",
             }}
           >
-            <Link style={{ color: "white" }} to={"/"}>
+            <Link style={{ color: "white", fontFamily: "titleFont" }} to={"/"}>
               The Kings
             </Link>
             <img
@@ -157,7 +158,7 @@ export default function Sidebar() {
           </IconButton>
         </DrawerHeader>
         <Divider />
-        <List>
+        <List style={{ fontFamily: "titleFont" }}>
           <ListItem>
             <ListItemButton component={Link} to="/timeline">
               TIMELINE
@@ -181,7 +182,7 @@ export default function Sidebar() {
           </ListItem>
         </List>
         <Divider />
-        <List>
+        <List style={{ fontFamily: "titleFont" }}>
           <ListItem>
             <ListItemButton component={Link} to="/bingo">
               BINGO
@@ -200,7 +201,7 @@ export default function Sidebar() {
           </ListItem>
         </List>
         <Divider />
-        <List>
+        <List style={{ fontFamily: "titleFont" }}>
           <ListItem>
             <ListItemButton component={Link} to="/voice">
               VOICEMAIL
