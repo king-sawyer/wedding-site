@@ -14,7 +14,7 @@ const Welcomepage = ({ logout, userData }) => {
         <li>Try the connections.</li>
         <li>Try the wordle.</li>
       </ul>
-      <button onClick={() => logout()}>Log out</button>
+      {/* <button onClick={() => logout()}>Log out</button> */}
     </div>
   );
 };
