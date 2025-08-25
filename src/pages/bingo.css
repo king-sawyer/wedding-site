@@ -1,21 +1,15 @@
 .bingo {
-  /* background-color: #faf8f6; */
-  /* margin: 40px auto;
-  padding: 20px; */
   border-radius: 12px;
-  /* box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2); */
   border-radius: 5px;
   padding-bottom: 200px;
 }
 
 .bingo-board {
-  /* background-color: #faf8f6; */
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   height: 55vh;
   width: 100vw;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  /* gap: 10px; */
   margin-left: 2px;
   padding: 0 10px;
 }
@@ -31,7 +25,6 @@
   font-size: xx-large;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  /* margin-bottom: 20px; */
   border-radius: 5px;
   font-family: titleFont;
   padding: 0 10px;
@@ -50,7 +43,6 @@
   width: 18vw;
   height: 10vh;
 
-  /* background-color: rgb(254, 235, 235); */
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
 
   border: 1px solid #8a9a5b;
