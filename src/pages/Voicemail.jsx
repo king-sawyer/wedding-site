@@ -12,7 +12,7 @@ const Voicemail = () => {
       <ul className="welcome-list">
         <li>Advice for the couple</li>
         <li>Memories together</li>
-        <li>Favorite moments from the evevning</li>
+        <li>Favorite moments from the evening</li>
         <li>Boozy confessions</li>
         <li>Unpopular opinions</li>
         <li>Whatever your heart desires</li>
@@ -30,7 +30,7 @@ const Voicemail = () => {
         {" "}
         Give us a call!{" "}
       </a>
-      <p style={{ paddingTop: "30px" }}>Alternitavely: 503-673-6244</p>
+      <p style={{ paddingTop: "30px" }}>Alternatively: 503-673-6244</p>
     </div>
   );
 };
