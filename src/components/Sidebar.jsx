@@ -159,6 +159,11 @@ export default function Sidebar() {
         <Divider />
         <List>
           <ListItem>
+            <ListItemButton component={Link} to="/timeline">
+              TIMELINE
+            </ListItemButton>
+          </ListItem>
+          <ListItem>
             <ListItemButton component={Link} to="/photos">
               PHOTOS
             </ListItemButton>
@@ -178,15 +183,16 @@ export default function Sidebar() {
         <Divider />
         <List>
           <ListItem>
+            <ListItemButton component={Link} to="/mini">
+              BINGO
+            </ListItemButton>
+          </ListItem>
+          <ListItem>
             <ListItemButton component={Link} to="/connections">
               CONNECTIONS
             </ListItemButton>
           </ListItem>
-          <ListItem>
-            <ListItemButton component={Link} to="/mini">
-              THE MINI
-            </ListItemButton>
-          </ListItem>
+
           <ListItem>
             <ListItemButton component={Link} to="/wordle">
               WORDLE
@@ -195,11 +201,6 @@ export default function Sidebar() {
         </List>
         <Divider />
         <List>
-          <ListItem>
-            <ListItemButton component={Link} to="/timeline">
-              TIMELINE
-            </ListItemButton>
-          </ListItem>
           <ListItem>
             <ListItemButton component={Link} to="/voice">
               VOICEMAIL
