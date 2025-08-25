@@ -1,0 +1,44 @@
+.leaderboard-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.leaderboard-section {
+  margin-bottom: 40px;
+}
+
+.leaderboard-section h2 {
+  margin-bottom: 10px;
+  font-size: 20px;
+  color: #333;
+  border-bottom: 2px solid #ccc;
+  padding-bottom: 5px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+th,
+td {
+  padding: 10px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+th {
+  background-color: #f4f4f4;
+  font-weight: bold;
+}
+
+tr:nth-child(even) {
+  background-color: #fafafa;
+}
+
+tr:hover {
+  background-color: #f1f1f1;
+}
