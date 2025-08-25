@@ -212,6 +212,7 @@ const PhotoPage = () => {
                 src={url}
                 onLoad={(e) => handleImageLoad(e, url)}
                 className={`grid-image ${imageOrientations[url] || ""}`}
+                loading="lazy"
               />
             ))}
 
