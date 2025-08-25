@@ -97,6 +97,8 @@ const Messages = ({ userData }) => {
         console.error("Error adding message:", error);
       } else {
         fetchMessages();
+        toggleAddMessage();
+        //await supabase.rpc("increment_messages", { user_uuid: user.userId });
       }
     }
   };
@@ -148,9 +150,7 @@ const Messages = ({ userData }) => {
           alignItems: "center",
         }}
       >
-        <h2 style={{ flex: "1", textAlign: "center", color: "#5a86ad" }}>
-          Messages
-        </h2>{" "}
+        <h2 style={{ flex: "1", textAlign: "center" }}>Messages</h2>{" "}
         {/* <p style={{ flex: "1", fontSize: "30px" }}>🔄</p> */}
         <button onClick={fetchMessages} style={{ flex: "0.25" }}>
           Refresh
@@ -173,6 +173,8 @@ const Messages = ({ userData }) => {
                 boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
                 display: "flex",
                 flexDirection: "column",
+                color: "#5a86ad",
+                fontWeight: "bold",
               }}
             >
               <p style={{ margin: 0, marginBottom: "8px" }}>{msg.message}</p>
@@ -182,6 +184,7 @@ const Messages = ({ userData }) => {
                   fontSize: "0.85rem",
                   color: "#555",
                   fontStyle: "italic",
+                  fontWeight: "normal",
                 }}
               >
                 -{msg.name}
@@ -201,7 +204,7 @@ const Messages = ({ userData }) => {
 
             <div className="file-input-wrapper">
               <label>
-                <h3>Enter a message:</h3>
+                <h3>Enter a message</h3>
 
                 <textarea
                   style={{
