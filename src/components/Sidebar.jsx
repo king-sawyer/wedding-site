@@ -183,7 +183,7 @@ export default function Sidebar() {
         <Divider />
         <List>
           <ListItem>
-            <ListItemButton component={Link} to="/mini">
+            <ListItemButton component={Link} to="/bingo">
               BINGO
             </ListItemButton>
           </ListItem>

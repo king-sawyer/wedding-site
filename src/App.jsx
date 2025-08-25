@@ -3,7 +3,6 @@ import "./App.css";
 import Connections from "./pages/Connections";
 
 import { Routes, Route } from "react-router-dom";
-import MiniCrossword from "./pages/MiniCrossword";
 import Wordle from "./pages/Wordle";
 import Sidebar from "./components/Sidebar";
 import Login from "./pages/Login";
@@ -17,6 +16,7 @@ import Profile from "./pages/Profile";
 import PhotoPage from "./pages/PhotoPage";
 import Timeline from "./pages/Timeline";
 import Voicemail from "./pages/Voicemail";
+import Bingo from "./pages/Bingo";
 
 function App() {
   const [userData, setUserData] = useState(
@@ -53,7 +53,7 @@ function App() {
               path="connections"
               element={<Connections userData={userData} />}
             />
-            <Route path="mini" element={<MiniCrossword />} />
+            <Route path="bingo" element={<Bingo />} />
             <Route path="/timeline" element={<Timeline />} />
             <Route path="wordle" element={<Wordle userData={userData} />} />
             <Route path="photos" element={<PhotoPage />} />
