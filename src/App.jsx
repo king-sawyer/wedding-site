@@ -16,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 import Profile from "./pages/Profile";
 import PhotoPage from "./pages/PhotoPage";
 import Timeline from "./pages/Timeline";
+import Voicemail from "./pages/Voicemail";
 
 function App() {
   const [userData, setUserData] = useState(
@@ -46,6 +47,7 @@ function App() {
               }
             />
             <Route path="leaderboard" element={<Leaderboard />} />
+            <Route path="voice" element={<Voicemail />} />
             <Route path="messages" element={<Messages userData={userData} />} />
             <Route
               path="connections"

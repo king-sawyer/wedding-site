@@ -168,6 +168,7 @@ export default function Sidebar() {
               MESSAGES
             </ListItemButton>
           </ListItem>
+
           <ListItem>
             <ListItemButton component={Link} to="/leaderboard">
               LEADERBOARD
@@ -197,6 +198,11 @@ export default function Sidebar() {
           <ListItem>
             <ListItemButton component={Link} to="/timeline">
               TIMELINE
+            </ListItemButton>
+          </ListItem>
+          <ListItem>
+            <ListItemButton component={Link} to="/voice">
+              VOICEMAIL
             </ListItemButton>
           </ListItem>
         </List>
