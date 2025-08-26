@@ -47,7 +47,7 @@ const Leaderboard = () => {
     });
 
   const getStatusEmoji = (index) => {
-    if (index === 0) return "🫅";
+    if (index === 0) return "👑";
     if (index === 1) return "😍";
     if (index === 2) return "🫡";
     return "🥺👉👈";
