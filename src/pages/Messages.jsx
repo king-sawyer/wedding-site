@@ -85,9 +85,26 @@ const Messages = ({ userData }) => {
     setLoading(false);
   };
 
+  // const handleAddMessage = async () => {
+  //   if (messageText) {
+  //     const { data, error } = await supabase
+  //       .from("messages")
+  //       .insert([
+  //         { message: messageText, name: user.first, uuid: user.userId },
+  //       ]);
+
+  //     if (error) {
+  //       console.error("Error adding message:", error);
+  //     } else {
+  //       fetchMessages();
+  //       toggleAddMessage();
+  //     }
+  //   }
+  // };
+
   const handleAddMessage = async () => {
     if (messageText) {
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from("messages")
         .insert([
           { message: messageText, name: user.first, uuid: user.userId },
@@ -96,9 +113,16 @@ const Messages = ({ userData }) => {
       if (error) {
         console.error("Error adding message:", error);
       } else {
+        const { error: rpcError } = await supabase.rpc("increment_messages", {
+          user_uuid: user.userId,
+        });
+
+        if (rpcError) {
+          console.error("Error incrementing messagesAdded:", rpcError);
+        }
+
         fetchMessages();
         toggleAddMessage();
-        //await supabase.rpc("increment_messages", { user_uuid: user.userId });
       }
     }
   };

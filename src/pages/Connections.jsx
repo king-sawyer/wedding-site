@@ -79,7 +79,9 @@ const Connections = ({ userData }) => {
   }, []);
 
   useEffect(() => {
-    checkWinCondition();
+    console.log(numCorrect);
+
+    // checkWinCondition();
 
     async function updateSupabaseAttempts() {
       await supabase
@@ -93,6 +95,7 @@ const Connections = ({ userData }) => {
   useEffect(() => {
     if (correctlyGuessedCategories.length == 4) {
       setPlaying(false);
+      checkWinCondition();
     }
   }, [correctlyGuessedCategories]);
 
@@ -102,16 +105,28 @@ const Connections = ({ userData }) => {
   };
 
   const checkWinCondition = () => {
-    if (numCorrect === 4) {
+    if (numCorrect == 3) {
       console.log("You win!");
+
+      setCompletedConnections();
     }
 
     if (attempts === 0 && numCorrect < 4 && !hasRevealed) {
       console.log("You lose!");
+      setCompletedConnections();
+
       setHasRevealed(true);
       revealRemainingCategories();
     }
   };
+
+  async function setCompletedConnections() {
+    console.log("Setting completed connections");
+    await supabase
+      .from("users")
+      .update({ completedConnections: true })
+      .eq("uuid", user.userId);
+  }
 
   async function checkAttempt() {
     let categories = [];

@@ -23,6 +23,8 @@ const Leaderboard = () => {
     messagesAdded: parseInt(user.messagesAdded || 0, 10),
     picturesAdded: parseInt(user.picturesAdded || 0, 10),
     wordleGuesses: JSON.parse(user.wordleGuesses || "[]").length,
+    completedWordle: user.completedWordle,
+    completedConnections: user.completedConnections,
   }));
 
   const sortBy = (key) => [...formatUsers].sort((a, b) => b[key] - a[key]);
@@ -88,7 +90,11 @@ const Leaderboard = () => {
                 <td>
                   {user.firstName} {user.lastName}
                 </td>
-                <td>{user.connectionsAttempts}</td>
+                {user.completedConnections ? (
+                  <td>{user.connectionsAttempts}</td>
+                ) : (
+                  <td> In progress...</td>
+                )}
               </tr>
             ))}
           </tbody>

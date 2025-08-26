@@ -7,7 +7,8 @@ import { toast } from "react-toastify";
 
 import "./photopage.css";
 
-const PhotoPage = () => {
+const PhotoPage = ({ userData }) => {
+  const user = userData;
   const [imageFiles, setImageFiles] = useState([]);
   const [previews, setPreviews] = useState([]);
   const [images, setImages] = useState([]);
@@ -26,33 +27,42 @@ const PhotoPage = () => {
   const uploadImage = async () => {
     if (!imageFiles.length) return;
 
-    toggleAddImage();
-    const toastId = toast.loading(
-      "Uploading: this may take a while if uploading multiple at once..."
-    );
-
-    for (let file of imageFiles) {
-      const { data, error } = await supabase.storage
-        .from("wedding-pictures")
-        .upload(`public/${file.name}`, file, {
-          cacheControl: "3600",
-          upsert: false,
-        });
-
-      if (error) {
-        console.error(error);
-      } else {
-        console.log(data);
-      }
-    }
-
-    toast.update(toastId, {
-      render: "Images uploaded!",
-      type: "success",
-      isLoading: false,
-      autoClose: 2000,
+    const { error: rpcError } = await supabase.rpc("increment_photos", {
+      user_uuid: user.userId,
+      numadded: imageFiles.length,
     });
-    fetchImages();
+
+    if (rpcError) {
+      console.error("Error incrementing photosAdded:", rpcError);
+    } else {
+      toggleAddImage();
+      const toastId = toast.loading(
+        "Uploading: this may take a while if uploading multiple at once..."
+      );
+
+      for (let file of imageFiles) {
+        const { data, error } = await supabase.storage
+          .from("wedding-pictures")
+          .upload(`public/${file.name}`, file, {
+            cacheControl: "3600",
+            upsert: false,
+          });
+
+        if (error) {
+          console.error(error);
+        } else {
+          console.log(data);
+        }
+      }
+
+      toast.update(toastId, {
+        render: "Images uploaded!",
+        type: "success",
+        isLoading: false,
+        autoClose: 2000,
+      });
+      fetchImages();
+    }
   };
 
   const displayImagePopup = (url) => {
@@ -67,6 +77,7 @@ const PhotoPage = () => {
   const handleImageUpload = (e) => {
     setLoading(true);
     const files = Array.from(e.target.files);
+    console.log(files.length);
     setImageFiles(files);
 
     const filePreviews = files.map((file) => URL.createObjectURL(file));

@@ -56,7 +56,7 @@ function App() {
             <Route path="bingo" element={<Bingo />} />
             <Route path="/timeline" element={<Timeline />} />
             <Route path="wordle" element={<Wordle userData={userData} />} />
-            <Route path="photos" element={<PhotoPage />} />
+            <Route path="photos" element={<PhotoPage userData={userData} />} />
             <Route path="/profile" element={<Profile userData={userData} />} />
           </Route>
         </Routes>
