@@ -1,7 +1,11 @@
-//import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import "./bingo.css";
 
-export default function Bingo() {
+import { supabase } from "../SupabaseClient";
+
+export default function Bingo({ userData }) {
+  const user = userData;
+
   const bingoWords = [
     "Use the photo booth",
     "Give someone a kiss",
@@ -29,28 +33,124 @@ export default function Bingo() {
     "Scratch off your lottery ticket",
   ];
 
-  const shuffled = bingoWords.sort(() => Math.random() - 0.5);
+  const fetchUserBingo = async (userId) => {
+    const { data, error } = await supabase
+      .from("users")
+      .select("bingo_order, bingo_selected, bingoInit")
+      .eq("uuid", userId)
+      .single();
 
-  console.log(shuffled);
-  bingoWords.splice(12, 0, "Free Space");
+    if (error) {
+      console.error("Error fetching bingo:", error);
+      return null;
+    }
+    return data;
+  };
+
+  const [shuffled, setShuffled] = useState(Array(25).fill(""));
+  const [selected, setSelected] = useState(Array(25).fill(false));
+
+  useEffect(() => {
+    const initBingo = async () => {
+      const data = await fetchUserBingo(user.userId);
+
+      if (data.bingoInit) {
+        console.log(data);
+        setShuffled(data.bingo_order);
+        setSelected(data.bingo_selected);
+      } else {
+        const copy = [...bingoWords].sort(() => Math.random() - 0.5);
+        copy.splice(12, 0, "Free Space");
+
+        setShuffled(copy);
+        const initialSelected = Array(25).fill(false);
+        initialSelected[12] = true;
+        setSelected(initialSelected);
+
+        await supabase
+          .from("users")
+          .update({
+            bingo_order: copy,
+            bingo_selected: initialSelected,
+            bingoInit: true,
+          })
+          .eq("uuid", user.userId);
+      }
+    };
+
+    initBingo();
+  }, []);
+
+  const toggleSquare = async (index) => {
+    const newSelected = [...selected];
+    newSelected[index] = !newSelected[index];
+    setSelected(newSelected);
+
+    const { error } = await supabase
+      .from("users")
+      .update({ bingo_selected: newSelected })
+      .eq("uuid", user.userId);
+
+    if (error) console.error("Error updating bingo:", error);
+  };
+
+  useEffect(() => {
+    const checkBingo = () => {
+      const size = 5;
+      // rows
+      for (let r = 0; r < size; r++) {
+        if ([...Array(size).keys()].every((c) => selected[r * size + c])) {
+          return true;
+        }
+      }
+      // cols
+      for (let c = 0; c < size; c++) {
+        if ([...Array(size).keys()].every((r) => selected[r * size + c])) {
+          return true;
+        }
+      }
+      // diagonals
+      if ([...Array(size).keys()].every((i) => selected[i * size + i])) {
+        return true;
+      }
+      if (
+        [...Array(size).keys()].every(
+          (i) => selected[i * size + (size - 1 - i)]
+        )
+      ) {
+        return true;
+      }
+      return false;
+    };
+
+    if (checkBingo()) {
+      console.log("BINGO");
+    }
+  }, [selected]);
 
   return (
     <div className="bingo">
       <div className="bingo-title">
-        <p>k</p>
-        <p>i</p>
-        <p>n</p>
-        <p>g</p>
-        <p>o</p>
+        <p>K</p>
+        <p>I</p>
+        <p>N</p>
+        <p>G</p>
+        <p>O</p>
       </div>
+
       <div className="bingo-board">
-        {bingoWords.map((word, index) => (
-          <div className="word-box" key={index}>
-            {" "}
-            {word.toUpperCase()}{" "}
+        {shuffled.map((word, index) => (
+          <div
+            className={`word-box ${selected[index] ? "selected" : ""}`}
+            key={index}
+            onClick={() => toggleSquare(index)}
+          >
+            {word ? word.toUpperCase() : ""}
           </div>
         ))}
       </div>
+
+      {/* {winner && <div className="bingo-winner">🎉 BINGO! 🎉</div>} */}
     </div>
   );
 }

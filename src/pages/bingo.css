@@ -48,4 +48,24 @@
   border: 1px solid #8a9a5b;
   border-radius: 5px;
   font-weight: 700;
+
+  transition: 0.2s ease;
+}
+
+.word-box:hover {
+  background: #f0f0f0;
+}
+
+.word-box.selected {
+  background: #4caf50; /* green highlight */
+  color: white;
+  font-weight: bold;
+}
+
+.word-box .checkmark {
+  position: absolute;
+  bottom: 5px;
+  right: 8px;
+  font-size: 1.2rem;
+  color: yellow;
 }
