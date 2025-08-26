@@ -65,12 +65,12 @@ const Leaderboard = () => {
     if (index == 0) {
       return "Next time...";
     } else {
-      return index;
+      return Math.abs(index - 4);
     }
   };
 
   const getWordleEmoji = (index) => {
-    if (index === 1) return "🫅";
+    if (index === 1) return "👑";
     if (index === 2) return "🥳";
     if (index === 3) return "😅";
     if (index === 4) return "🥲";
@@ -146,7 +146,7 @@ const Leaderboard = () => {
           <thead>
             <tr>
               <th>Name</th>
-              <th>Connection Attempts</th>
+              <th>Mistakes Made</th>
               <th>Status</th>
             </tr>
           </thead>
@@ -182,7 +182,7 @@ const Leaderboard = () => {
           <thead>
             <tr>
               <th>Name</th>
-              <th>Guess Count</th>
+              <th>Guesses</th>
               <th>Status</th>
             </tr>
           </thead>
