@@ -53,7 +53,7 @@ function App() {
               path="connections"
               element={<Connections userData={userData} />}
             />
-            <Route path="bingo" element={<Bingo />} />
+            <Route path="bingo" element={<Bingo userData={userData} />} />
             <Route path="/timeline" element={<Timeline />} />
             <Route path="wordle" element={<Wordle userData={userData} />} />
             <Route path="photos" element={<PhotoPage userData={userData} />} />

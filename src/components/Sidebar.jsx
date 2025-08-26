@@ -124,11 +124,11 @@ export default function Sidebar() {
             <Link style={{ color: "white", fontFamily: "titleFont" }} to={"/"}>
               The Kings
             </Link>
-            <img
+            {/* <img
               style={{ width: "30px", borderRadius: "50%" }}
               src="/default.jpg"
               onClick={() => navigateToProfilePage()}
-            />
+            /> */}
           </div>
         </Toolbar>
       </AppBar>
