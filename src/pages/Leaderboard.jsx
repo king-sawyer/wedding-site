@@ -54,7 +54,7 @@ const Leaderboard = () => {
   };
 
   const getConnectionsEmoji = (index) => {
-    if (index === 4) return "🫅";
+    if (index === 4) return "👑";
     if (index === 3) return "💁";
     if (index === 2) return "🤷";
     if (index === 1) return "🙇";
