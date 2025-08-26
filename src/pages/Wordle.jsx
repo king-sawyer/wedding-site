@@ -64,6 +64,14 @@ const Wordle = ({ userData }) => {
     fetchUserData();
   }, [user.userId]);
 
+  async function setCompletdWordle() {
+    console.log("setting completed wordle");
+    await supabase
+      .from("users")
+      .update({ completedWordle: true })
+      .eq("uuid", user.userId);
+  }
+
   useEffect(() => {
     if (!solution) return;
     let combined = {};
@@ -165,10 +173,30 @@ const Wordle = ({ userData }) => {
             setCurrentGuess("");
 
             if (newGuess === solution) {
+              setCompletdWordle();
+
               setWinner(true);
               setGameOver(true);
               setStatus("🎉 You Win!");
             } else if (guesses.length + 1 === MAX_ATTEMPTS) {
+              setCompletdWordle();
+
+              //Add word to show user lost
+
+              setGuesses((prev) => {
+                const updatedGuesses = [...prev, "BOZO"];
+
+                supabase
+                  .from("users")
+                  .update({ wordleGuesses: updatedGuesses })
+                  .eq("uuid", user.userId)
+                  .then(({ error }) => {
+                    if (error) console.error("Supabase update failed:", error);
+                  });
+
+                return updatedGuesses;
+              });
+
               setStatus(`❌ Game Over! The word was ${solution}`);
               setGameOver(true);
             }
@@ -290,7 +318,7 @@ const Wordle = ({ userData }) => {
                     <div
                       style={{
                         fontFamily:
-                          "system-ui, Avenir, Helvetica, Arial, sans-serif;",
+                          "system-ui, Avenir, Helvetica, Arial, sans-serif",
                       }}
                     >
                       You (probably) almost had it with: <p>{guesses[5]}!</p>

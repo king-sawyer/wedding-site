@@ -2,7 +2,6 @@
   max-width: 900px;
   margin: 0 auto;
   padding: 20px;
-  font-family: Arial, sans-serif;
 }
 
 .leaderboard-section {
@@ -22,17 +21,23 @@ table {
   border-collapse: collapse;
   margin-top: 10px;
 }
-
-th,
-td {
+th {
+  font-family: titleFont;
+  padding: 10px;
   padding: 10px;
   text-align: left;
   border: 1px solid #ddd;
-}
-
-th {
   background-color: #f4f4f4;
   font-weight: bold;
+}
+
+td {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  padding: 10px;
+  text-align: left;
+  border: 1px solid #ddd;
+  font-style: italic;
+  color: #555;
 }
 
 tr:nth-child(even) {
@@ -41,4 +46,18 @@ tr:nth-child(even) {
 
 tr:hover {
   background-color: #f1f1f1;
+}
+
+tbody tr.in-progress {
+  opacity: 0.3;
+}
+
+tbody tr.in-progress {
+  opacity: 0.3;
+}
+
+td:last-child,
+th:last-child {
+  text-align: center;
+  font-size: 1.2rem;
 }
