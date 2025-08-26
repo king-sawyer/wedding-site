@@ -160,23 +160,39 @@ export default function Sidebar() {
         <Divider />
         <List style={{ fontFamily: "titleFont" }}>
           <ListItem>
-            <ListItemButton component={Link} to="/timeline">
+            <ListItemButton
+              onClick={handleDrawerClose}
+              component={Link}
+              to="/timeline"
+            >
               TIMELINE
             </ListItemButton>
           </ListItem>
           <ListItem>
-            <ListItemButton component={Link} to="/photos">
+            <ListItemButton
+              onClick={handleDrawerClose}
+              component={Link}
+              to="/photos"
+            >
               PHOTOS
             </ListItemButton>
           </ListItem>
           <ListItem>
-            <ListItemButton component={Link} to="/messages">
+            <ListItemButton
+              onClick={handleDrawerClose}
+              component={Link}
+              to="/messages"
+            >
               MESSAGES
             </ListItemButton>
           </ListItem>
 
           <ListItem>
-            <ListItemButton component={Link} to="/leaderboard">
+            <ListItemButton
+              onClick={handleDrawerClose}
+              component={Link}
+              to="/leaderboard"
+            >
               LEADERBOARD
             </ListItemButton>
           </ListItem>
@@ -184,18 +200,30 @@ export default function Sidebar() {
         <Divider />
         <List style={{ fontFamily: "titleFont" }}>
           <ListItem>
-            <ListItemButton component={Link} to="/bingo">
+            <ListItemButton
+              onClick={handleDrawerClose}
+              component={Link}
+              to="/bingo"
+            >
               BINGO
             </ListItemButton>
           </ListItem>
           <ListItem>
-            <ListItemButton component={Link} to="/connections">
+            <ListItemButton
+              onClick={handleDrawerClose}
+              component={Link}
+              to="/connections"
+            >
               CONNECTIONS
             </ListItemButton>
           </ListItem>
 
           <ListItem>
-            <ListItemButton component={Link} to="/wordle">
+            <ListItemButton
+              onClick={handleDrawerClose}
+              component={Link}
+              to="/wordle"
+            >
               WORDLE
             </ListItemButton>
           </ListItem>
@@ -203,7 +231,11 @@ export default function Sidebar() {
         <Divider />
         <List style={{ fontFamily: "titleFont" }}>
           <ListItem>
-            <ListItemButton component={Link} to="/voice">
+            <ListItemButton
+              onClick={handleDrawerClose}
+              component={Link}
+              to="/voice"
+            >
               VOICEMAIL
             </ListItemButton>
           </ListItem>
