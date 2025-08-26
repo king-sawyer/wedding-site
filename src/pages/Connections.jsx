@@ -79,8 +79,6 @@ const Connections = ({ userData }) => {
   }, []);
 
   useEffect(() => {
-    console.log(numCorrect);
-
     // checkWinCondition();
 
     async function updateSupabaseAttempts() {
@@ -121,7 +119,6 @@ const Connections = ({ userData }) => {
   };
 
   async function setCompletedConnections() {
-    console.log("Setting completed connections");
     await supabase
       .from("users")
       .update({ completedConnections: true })
