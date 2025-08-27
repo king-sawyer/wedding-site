@@ -47,7 +47,7 @@ const PhotoPage = ({ userData }) => {
       // 🔹 Upload all files in parallel instead of sequentially
       const uploadPromises = imageFiles.map((file) =>
         supabase.storage.from("wedding-pictures").upload(
-          `public/${user.userId}/${Date.now()}-${file.name}`, // safer unique path
+          `public/${user.userId}-${file.name}`, // safer unique path
           file,
           {
             cacheControl: "31536000",
