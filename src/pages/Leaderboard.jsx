@@ -140,6 +140,59 @@ const Leaderboard = () => {
 
   const topChampion = getTopChampion();
 
+  const assignLeaderboardPoints = (users, sortFunc, keyExtractor) => {
+    const sorted = sortFunc(users);
+    const points = {};
+    sorted.slice(0, 3).forEach((user, index) => {
+      const uuid = keyExtractor(user);
+      points[uuid] = (points[uuid] || 0) + (3 - index);
+    });
+    return points;
+  };
+
+  const getOverallTop3 = () => {
+    const pointsMap = {};
+
+    const categories = [
+      () =>
+        assignLeaderboardPoints(
+          formatUsers,
+          () => sortBy("messagesAdded"),
+          (u) => u.uuid
+        ),
+      () =>
+        assignLeaderboardPoints(
+          formatUsers,
+          () => sortBy("picturesAdded"),
+          (u) => u.uuid
+        ),
+      () =>
+        assignLeaderboardPoints(
+          formatUsers,
+          () => sortBy("totalBingos"),
+          (u) => u.uuid
+        ),
+      () =>
+        assignLeaderboardPoints(formatUsers, sortConnections, (u) => u.uuid),
+      () => assignLeaderboardPoints(formatUsers, sortWordle, (u) => u.uuid),
+    ];
+
+    categories.forEach((getPoints) => {
+      const catPoints = getPoints();
+      for (const [uuid, pts] of Object.entries(catPoints)) {
+        pointsMap[uuid] = (pointsMap[uuid] || 0) + pts;
+      }
+    });
+
+    const ranked = formatUsers
+      .map((u) => ({ ...u, totalPoints: pointsMap[u.uuid] || 0 }))
+      .sort((a, b) => b.totalPoints - a.totalPoints);
+
+    return ranked.slice(0, 3);
+  };
+
+  const overallTop3 = getOverallTop3();
+
   return (
     <>
       {loading ? (
@@ -190,6 +243,36 @@ const Leaderboard = () => {
                 />
               </div>
             </div>
+          )}
+
+          {users.length > 2 ? (
+            <div className="leaderboard-section">
+              <h2>🏆 Overall Top 3 🏆</h2>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Rank</th>
+
+                    {/* <th>Total Points</th> */}
+                  </tr>
+                </thead>
+                <tbody>
+                  {overallTop3.map((user, index) => (
+                    <tr key={user.uuid}>
+                      <td>
+                        {user.firstName} {user.lastName}
+                      </td>
+                      <td>{index === 0 ? "🥇" : index === 1 ? "🥈" : "🥉"}</td>
+
+                      {/* <td>{user.totalPoints}</td> */}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <div></div>
           )}
 
           {/* Messages Leaderboard */}
@@ -306,7 +389,7 @@ const Leaderboard = () => {
 
           {/* Wordle Leaderboard */}
           <div className="leaderboard-section">
-            <h2>Wordle Guesses</h2>
+            <h2>WordLe Guesses</h2>
             <table>
               <thead>
                 <tr>
