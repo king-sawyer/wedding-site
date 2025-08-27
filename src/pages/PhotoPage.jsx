@@ -27,6 +27,7 @@ const PhotoPage = ({ userData }) => {
   const uploadImage = async () => {
     if (!imageFiles.length) return;
 
+    // increment photo counter first
     const { error: rpcError } = await supabase.rpc("increment_photos", {
       user_uuid: user.userId,
       numadded: imageFiles.length,
@@ -34,34 +35,58 @@ const PhotoPage = ({ userData }) => {
 
     if (rpcError) {
       console.error("Error incrementing photosAdded:", rpcError);
-    } else {
-      toggleAddImage();
-      const toastId = toast.loading(
-        "Uploading: this may take a while if uploading multiple at once..."
+      return;
+    }
+
+    toggleAddImage();
+    const toastId = toast.loading(
+      "Uploading: this may take a while if uploading multiple at once..."
+    );
+
+    try {
+      // 🔹 Upload all files in parallel instead of sequentially
+      const uploadPromises = imageFiles.map((file) =>
+        supabase.storage.from("wedding-pictures").upload(
+          `public/${user.userId}/${Date.now()}-${file.name}`, // safer unique path
+          file,
+          {
+            cacheControl: "31536000",
+            upsert: false,
+          }
+        )
       );
 
-      for (let file of imageFiles) {
-        const { data, error } = await supabase.storage
-          .from("wedding-pictures")
-          .upload(`public/${file.name}`, file, {
-            cacheControl: "3600",
-            upsert: false,
-          });
+      const results = await Promise.all(uploadPromises);
 
-        if (error) {
-          console.error(error);
-        } else {
-          console.log(data);
-        }
+      // check if any failed
+      const failed = results.filter((res) => res.error);
+      if (failed.length > 0) {
+        console.error("Some uploads failed:", failed);
+        toast.update(toastId, {
+          render: "Some images failed to upload ❌",
+          type: "error",
+          isLoading: false,
+          autoClose: 3000,
+        });
+      } else {
+        toast.update(toastId, {
+          render: "Images uploaded! ✅",
+          type: "success",
+          isLoading: false,
+          autoClose: 2000,
+        });
       }
 
-      toast.update(toastId, {
-        render: "Images uploaded!",
-        type: "success",
-        isLoading: false,
-        autoClose: 2000,
-      });
+      // refresh gallery
       fetchImages();
+    } catch (err) {
+      console.error("Upload error:", err);
+      toast.update(toastId, {
+        render: "Upload failed ❌",
+        type: "error",
+        isLoading: false,
+        autoClose: 3000,
+      });
     }
   };
 
@@ -108,7 +133,10 @@ const PhotoPage = ({ userData }) => {
       const { data: publicUrlData } = supabase.storage
         .from("wedding-pictures")
         .getPublicUrl(`public/${file.name}`);
-      return publicUrlData.publicUrl;
+      const optimizedUrl = `${publicUrlData.publicUrl}?width=600&quality=75&format=webp`;
+
+      // return publicUrlData.publicUrl;
+      return optimizedUrl;
     });
 
     setImages(urls);
