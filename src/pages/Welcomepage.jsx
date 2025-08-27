@@ -1,6 +1,6 @@
 import "./welcomepage.css";
 
-const Welcomepage = ({ logout, userData }) => {
+const Welcomepage = ({ userData }) => {
   return (
     <div className="welcome-container">
       <h1>LETS CELEBRATE!</h1>
@@ -11,10 +11,11 @@ const Welcomepage = ({ logout, userData }) => {
         <li>Upload images throughout the night in the Photos tab.</li>
         <li>Send us messages in the Messages tab.</li>
         <li>See where you rank in the leaderboard.</li>
+        <li>See if you can get a Bingo!</li>
         <li>Try the connections.</li>
         <li>Try the wordle.</li>
+        <li>Send us a voicemail.</li>
       </ul>
-      {/* <button onClick={() => logout()}>Log out</button> */}
     </div>
   );
 };
