@@ -25,6 +25,8 @@ table {
 .table-wrapper {
   width: 100%;
   overflow-x: auto;
+  max-height: 500px;
+  overflow-y: scroll;
 }
 
 th {
