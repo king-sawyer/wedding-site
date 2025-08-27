@@ -56,6 +56,15 @@ const Bingo = ({ userData }) => {
   const [shuffled, setShuffled] = useState(Array(25).fill(""));
   const [selected, setSelected] = useState(Array(25).fill(false));
 
+  const updateTotalBingos = async (numBingos) => {
+    await supabase
+      .from("users")
+      .update({
+        totalBingos: numBingos,
+      })
+      .eq("uuid", user.userId);
+  };
+
   useEffect(() => {
     const initBingo = async () => {
       setLoading(true);
@@ -65,6 +74,7 @@ const Bingo = ({ userData }) => {
         console.log(data);
         setShuffled(data.bingo_order);
         setSelected(data.bingo_selected);
+        setTotalBingos(data.totalBingos);
       } else {
         const copy = [...bingoWords].sort(() => Math.random() - 0.5);
         copy.splice(12, 0, "Free Space");
@@ -126,6 +136,8 @@ const Bingo = ({ userData }) => {
 
     setBingoSquares([...squares]);
     setTotalBingos(lines.length);
+
+    updateTotalBingos(lines.length);
   }, [selected]);
 
   const toggleSquare = async (index) => {
@@ -170,6 +182,8 @@ const Bingo = ({ userData }) => {
     }
 
     setTotalBingos(lines.length);
+
+    updateTotalBingos(lines.length);
   }, [selected]);
 
   return (
@@ -184,12 +198,14 @@ const Bingo = ({ userData }) => {
         />
       ) : (
         <div className="bingo">
-          <div className="bingo-title">
-            <p>K</p>
-            <p>I</p>
-            <p>N</p>
-            <p>G</p>
-            <p>O</p>
+          <div className="bingo-title-holder">
+            <div className="bingo-title">
+              <p>K</p>
+              <p>I</p>
+              <p>N</p>
+              <p>G</p>
+              <p>O</p>
+            </div>
           </div>
 
           <div className="bingo-board">
@@ -230,7 +246,25 @@ const Bingo = ({ userData }) => {
             ))}
           </div>
 
-          <div className="bingo-stats">🎉 Total Bingos: {totalBingos}</div>
+          <div className="bingo-stats">
+            <div className="total-bingos">
+              <p>TOTAL KINGOS</p>
+              <p>{totalBingos}</p>
+            </div>
+            <div className="color-key">
+              <p>COLOR KEY</p>
+              <div className="key-item">
+                <span className="key-box white" /> Not Done
+              </div>
+              <div className="key-item">
+                <span className="key-box green" /> Done
+              </div>
+              <div className="key-item">
+                <span className="key-box blue" />
+                In a KINGO
+              </div>
+            </div>
+          </div>
         </div>
       )}
     </>

@@ -64,7 +64,7 @@
 }
 
 .word-box.bingo {
-  background-color: #ff9800;
+  background-color: #5a86ad;
   color: white;
   font-weight: bold;
   position: relative;
@@ -112,4 +112,85 @@
   --y: 80;
   --s: 1.2;
   animation-delay: 0.6s;
+}
+
+.bingo-stats {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  margin: 10%;
+  font-family: titleFont;
+  gap: 2rem;
+}
+
+.total-bingos {
+  background-color: #fff;
+  width: 50%;
+  height: 20vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.total-bingos p:first-of-type {
+  font-size: 1.2rem;
+  margin: 0.2rem 0;
+}
+
+.total-bingos p:last-of-type {
+  font-size: 3rem;
+  font-weight: bold;
+  margin: 0.2rem 0;
+  color: #5a86ad;
+}
+
+.color-key {
+  background-color: #fff;
+  width: 50%;
+  height: 20vh;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.color-key p:first-of-type {
+  font-weight: bold;
+  font-size: 1.2rem;
+
+  margin-bottom: 0.5rem;
+}
+
+.color-key .key-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.3rem;
+}
+
+.key-box {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  border: 1px solid #000;
+  flex-shrink: 0;
+}
+
+.key-box.white {
+  background-color: #faf8f6;
+}
+
+.key-box.green {
+  background-color: #4caf50;
+}
+
+.key-box.blue {
+  background-color: #2196f3;
 }
