@@ -61,15 +61,15 @@ const Leaderboard = () => {
 
   const getBingoEmoji = (index) => {
     if (index == 12) return "👑";
-    if (index == 11) return "😄";
-    if (index == 10) return "😃";
-    if (index == 9) return "🙂";
-    if (index == 8) return "😐";
-    if (index == 7) return "😕";
-    if (index == 6) return "😟";
-    if (index == 5) return "😢";
-    if (index == 4) return "😥";
-    if (index == 3) return "😓";
+    if (index == 11) return "😍";
+    if (index == 10) return "😻";
+    if (index == 9) return "🤯";
+    if (index == 8) return "😏";
+    if (index == 7) return "🥳";
+    if (index == 6) return "🤣";
+    if (index == 5) return "😃";
+    if (index == 4) return "🙂";
+    if (index == 3) return "😐";
     if (index == 2) return "😞";
     if (index == 1) return "😔";
     if (index == 0) return "😭";
