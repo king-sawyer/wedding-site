@@ -247,7 +247,7 @@ const Leaderboard = () => {
 
           {users.length > 2 ? (
             <div className="leaderboard-section">
-              <h2>🏆 Overall Top 3 🏆</h2>
+              <h2>🏆 OveraLL Top 3 🏆</h2>
               <table>
                 <thead>
                   <tr>
