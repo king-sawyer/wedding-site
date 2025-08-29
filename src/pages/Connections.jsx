@@ -79,7 +79,7 @@ const Connections = ({ userData }) => {
   }, []);
 
   useEffect(() => {
-    // checkWinCondition();
+    checkWinCondition();
 
     async function updateSupabaseAttempts() {
       await supabase
@@ -217,7 +217,7 @@ const Connections = ({ userData }) => {
   };
 
   async function revealRemainingCategories() {
-    await new Promise((res) => setTimeout(res, 2000));
+    await new Promise((res) => setTimeout(res, 1700));
 
     clearSelected();
     let remainingBoxes = [...boxes.data];
@@ -247,7 +247,7 @@ const Connections = ({ userData }) => {
         color: color,
       });
 
-      await new Promise((res) => setTimeout(res, 1700));
+      await new Promise((res) => setTimeout(res, 1000));
     }
   }
 
