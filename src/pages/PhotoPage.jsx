@@ -4,6 +4,8 @@ import { supabase } from "../SupabaseClient";
 import { ClipLoader } from "react-spinners";
 import { toast } from "react-toastify";
 
+import imageCompression from "browser-image-compression";
+
 import "./photopage.css";
 
 const PAGE_SIZE = 20;
@@ -100,40 +102,52 @@ const PhotoPage = ({ userData }) => {
     }
 
     toggleAddImage();
-    const toastId = toast.loading(
-      "Uploading: this may take a while if uploading multiple at once..."
-    );
+    const toastId = toast.loading("Uploading images...");
 
     try {
-      const uploadPromises = imageFiles.map((file) =>
-        supabase.storage
-          .from("wedding-pictures")
-          .upload(`public/${user.userId}-${file.name}`, file, {
-            cacheControl: "31536000",
-            upsert: false,
+      // Step 1: Compress all images before uploading
+      const compressedFiles = await Promise.all(
+        imageFiles.map((file) =>
+          imageCompression(file, {
+            maxWidthOrHeight: 1920, // shrink big images
+            maxSizeMB: 1, // aim for ~1MB or less
+            useWebWorker: true,
           })
+        )
       );
 
-      const results = await Promise.all(uploadPromises);
-      const failed = results.filter((res) => res.error);
+      // Step 2: Upload with limited concurrency
+      const CONCURRENCY = 3; // adjust to your network speed
+      const queue = [...compressedFiles];
+      const results = [];
 
-      if (failed.length > 0) {
-        toast.update(toastId, {
-          render: "Some images failed to upload ❌",
-          type: "error",
-          isLoading: false,
-          autoClose: 3000,
-        });
-      } else {
-        toast.update(toastId, {
-          render: "Images uploaded! ✅",
-          type: "success",
-          isLoading: false,
-          autoClose: 2000,
-        });
+      while (queue.length) {
+        const batch = queue.splice(0, CONCURRENCY);
+        const batchResults = await Promise.all(
+          batch.map((file) =>
+            supabase.storage
+              .from("wedding-pictures")
+              .upload(`public/${user.userId}-${file.name}`, file, {
+                cacheControl: "31536000",
+                upsert: false,
+              })
+          )
+        );
+        results.push(...batchResults);
       }
 
-      // Refresh first page
+      // Step 3: Check for errors
+      const failed = results.filter((res) => res.error);
+      toast.update(toastId, {
+        render: failed.length
+          ? `Some images failed (${failed.length}) ❌`
+          : "Images uploaded! ✅",
+        type: failed.length ? "error" : "success",
+        isLoading: false,
+        autoClose: 3000,
+      });
+
+      // Step 4: Refresh gallery
       setPage(0);
       setImages([]);
       setHasMore(true);
@@ -148,7 +162,6 @@ const PhotoPage = ({ userData }) => {
       });
     }
   };
-
   // ---------------------------
   // Helpers
   // ---------------------------
