@@ -23,7 +23,7 @@
   min-width: 95vw;
   max-width: 95vw;
   max-height: 70vh;
-  overflow: hidden;
+  overflow: scroll;
 }
 
 .modal-close {
