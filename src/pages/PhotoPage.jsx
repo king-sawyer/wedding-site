@@ -102,7 +102,9 @@ const PhotoPage = ({ userData }) => {
     }
 
     toggleAddImage();
-    const toastId = toast.loading("Uploading images...");
+    const toastId = toast.loading(
+      "Uploading: this may take a while if uploading multiple at once..."
+    );
 
     try {
       // Step 1: Compress all images before uploading
