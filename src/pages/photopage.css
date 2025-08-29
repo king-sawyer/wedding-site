@@ -185,7 +185,7 @@
   opacity: 0.8;
 }
 
-.grid-image {
+.grid-image:not(:first-child) {
   background: #f0f0f0;
   min-height: 200px;
 }
