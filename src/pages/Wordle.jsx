@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import "./Wordle.css";
 
 import { supabase } from "../SupabaseClient";
@@ -26,6 +26,8 @@ const Wordle = ({ userData }) => {
   const [gameOver, setGameOver] = useState(false);
 
   const [loading, setLoading] = useState(false);
+
+  const revealingRef = useRef(false);
 
   useEffect(() => {
     setSolution("KINGS");
@@ -65,7 +67,6 @@ const Wordle = ({ userData }) => {
   }, [user.userId]);
 
   async function setCompletdWordle() {
-    console.log("setting completed wordle");
     await supabase
       .from("users")
       .update({ completedWordle: true })
@@ -123,6 +124,8 @@ const Wordle = ({ userData }) => {
   const handleKeyPress = async (key) => {
     if (status) return;
 
+    if (revealingRef.current) return;
+
     if (key === "ENTER" && currentGuess.length === WORD_LENGTH) {
       const isValid = await checkWord(currentGuess.toLowerCase());
       if (!isValid) {
@@ -141,6 +144,8 @@ const Wordle = ({ userData }) => {
         });
         return;
       }
+
+      revealingRef.current = true;
 
       const newGuess = currentGuess.toUpperCase();
       setRevealingRow(guesses.length);
@@ -200,6 +205,8 @@ const Wordle = ({ userData }) => {
               setStatus(`❌ Game Over! The word was ${solution}`);
               setGameOver(true);
             }
+
+            revealingRef.current = false;
           }, 400);
         }
 
@@ -322,6 +329,7 @@ const Wordle = ({ userData }) => {
                       }}
                     >
                       You (probably) almost had it with: <p>{guesses[5]}!</p>
+                      <p>The word was: KINGS</p>
                     </div>{" "}
                     <p>We still love you ❤️‍🩹</p>{" "}
                   </div>
