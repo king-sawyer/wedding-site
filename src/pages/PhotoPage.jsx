@@ -268,7 +268,7 @@ const PhotoPage = ({ userData }) => {
         ))}
 
         {loading && <ClipLoader size={40} color="#5a86ad" />}
-        {!hasMore && <p className="end-message">No more images 🎉</p>}
+        {/* {!hasMore && <p className="end-message">No more images 🎉</p>} */}
 
         <button className="fab-btn" onClick={toggleAddImage}>
           +
