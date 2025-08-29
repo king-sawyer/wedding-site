@@ -32,7 +32,7 @@ const Login = ({ setUserData }) => {
       <form onSubmit={handleSubmit}>
         <h1>Let the party begin!</h1>
 
-        <h3>
+        <h3 style={{ margin: "20px", textTransform: "uppercase" }}>
           Please provide your information to get details about the wedding, play
           mini games, and upload pictures throughout the night.
         </h3>

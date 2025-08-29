@@ -27,7 +27,7 @@ const Bingo = ({ userData }) => {
     "Do the wordle",
     "Upload a picture",
     "Send us a message",
-    "Do the worm",
+    "Do the worm or floss",
     "Twerk",
     "Take a selfie with your table",
     "Leave us a voicemail",

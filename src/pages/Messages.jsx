@@ -176,9 +176,9 @@ const Messages = ({ userData }) => {
       >
         <h2 style={{ flex: "1", textAlign: "center" }}>Messages</h2>{" "}
         {/* <p style={{ flex: "1", fontSize: "30px" }}>🔄</p> */}
-        <button onClick={fetchMessages} style={{ flex: "0.25" }}>
+        {/* <button onClick={fetchMessages} style={{ flex: "0.25" }}>
           Refresh
-        </button>
+        </button> */}
       </div>
       {messages.length === 0 ? (
         <p style={{ textAlign: "center", color: "#666" }}>No messages yet.</p>
