@@ -22,12 +22,12 @@ table {
   margin-top: 10px;
 }
 
-.table-wrapper {
+/* .table-wrapper {
   width: 100%;
   overflow-x: auto;
   max-height: 500px;
   overflow-y: scroll;
-}
+} */
 
 th {
   font-family: titleFont;
@@ -69,4 +69,26 @@ th:last-child {
   min-width: 82px;
   text-align: center;
   /* font-size: 1.2rem; */
+}
+
+.emoji-group {
+  white-space: nowrap;
+  display: inline-block;
+}
+
+.table-wrapper {
+  max-height: 300px; /* set max height you want for scrolling */
+  overflow-y: auto;
+}
+
+.table-wrapper table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table-wrapper thead th {
+  position: sticky;
+  top: 0;
+  background: white; /* keep header readable */
+  z-index: 2;
 }

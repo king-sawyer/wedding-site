@@ -279,26 +279,30 @@ const Leaderboard = () => {
           <div className="leaderboard-section">
             <div className="table-wrapper">
               <h2>Messages</h2>
-              <table>
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Messages</th>
-                    <th>Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {sortBy("messagesAdded").map((user, index) => (
-                    <tr key={user.uuid}>
-                      <td>
-                        {user.firstName} {user.lastName}
-                      </td>
-                      <td>{user.messagesAdded}</td>
-                      <td>{getStatusEmoji(index)}</td>
+              <div className="table-wrapper">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Messages</th>
+                      <th>Status</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {sortBy("messagesAdded").map((user, index) => (
+                      <tr key={user.uuid}>
+                        <td>
+                          {user.firstName} {user.lastName}
+                        </td>
+                        <td>{user.messagesAdded}</td>
+                        <span className="emoji-group">
+                          {getStatusEmoji(index)}
+                        </span>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
 
@@ -306,52 +310,58 @@ const Leaderboard = () => {
           <div className="leaderboard-section">
             <div className="table-wrapper">
               <h2>Pictures</h2>
-              <table>
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Pictures</th>
-                    <th>Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {sortBy("picturesAdded").map((user, index) => (
-                    <tr key={user.uuid}>
-                      <td>
-                        {user.firstName} {user.lastName}
-                      </td>
-                      <td>{user.picturesAdded}</td>
-                      <td>{getStatusEmoji(index)}</td>
+              <div className="table-wrapper">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Pictures</th>
+                      <th>Status</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {sortBy("picturesAdded").map((user, index) => (
+                      <tr key={user.uuid}>
+                        <td>
+                          {user.firstName} {user.lastName}
+                        </td>
+                        <td>{user.picturesAdded}</td>
+                        <span className="emoji-group">
+                          {getStatusEmoji(index)}
+                        </span>{" "}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
 
           <div className="leaderboard-section">
             <div className="table-wrapper">
               <h2>Bingos</h2>
-              <table>
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Pictures</th>
-                    <th>Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {sortBy("totalBingos").map((user) => (
-                    <tr key={user.uuid}>
-                      <td>
-                        {user.firstName} {user.lastName}
-                      </td>
-                      <td>{user.totalBingos}</td>
-                      <td>{getBingoEmoji(user.totalBingos)}</td>
+              <div className="table-wrapper">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Pictures</th>
+                      <th>Status</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {sortBy("totalBingos").map((user) => (
+                      <tr key={user.uuid}>
+                        <td>
+                          {user.firstName} {user.lastName}
+                        </td>
+                        <td>{user.totalBingos}</td>
+                        <td>{getBingoEmoji(user.totalBingos)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
 
@@ -359,41 +369,45 @@ const Leaderboard = () => {
           <div className="leaderboard-section">
             <div className="table-wrapper">
               <h2>Connections</h2>
-              <table>
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Mistakes Made</th>
-                    <th>Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {sortConnections().map((user) => (
-                    <tr
-                      key={user.uuid}
-                      className={
-                        !user.completedConnections ? "in-progress" : ""
-                      }
-                    >
-                      <td>
-                        {user.firstName} {user.lastName}
-                      </td>
-                      {user.completedConnections ? (
-                        <td>
-                          {checkConnectionsStatus(user.connectionsAttempts)}
-                        </td>
-                      ) : (
-                        <td>In progress...</td>
-                      )}
-                      {user.completedConnections ? (
-                        <td>{getConnectionsEmoji(user.connectionsAttempts)}</td>
-                      ) : (
-                        <td>🤔</td>
-                      )}
+              <div className="table-wrapper">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Mistakes Made</th>
+                      <th>Status</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {sortConnections().map((user) => (
+                      <tr
+                        key={user.uuid}
+                        className={
+                          !user.completedConnections ? "in-progress" : ""
+                        }
+                      >
+                        <td>
+                          {user.firstName} {user.lastName}
+                        </td>
+                        {user.completedConnections ? (
+                          <td>
+                            {checkConnectionsStatus(user.connectionsAttempts)}
+                          </td>
+                        ) : (
+                          <td>In progress...</td>
+                        )}
+                        {user.completedConnections ? (
+                          <td>
+                            {getConnectionsEmoji(user.connectionsAttempts)}
+                          </td>
+                        ) : (
+                          <td>🤔</td>
+                        )}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
 
@@ -401,38 +415,40 @@ const Leaderboard = () => {
           <div className="leaderboard-section">
             <div className="table-wrapper">
               <h2>WordLe Guesses</h2>
-              <table>
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Guesses</th>
-                    <th>Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {sortWordle().map((user) => (
-                    <tr
-                      key={user.uuid}
-                      className={!user.completedWordle ? "in-progress" : ""}
-                    >
-                      <td>
-                        {user.firstName} {user.lastName}
-                      </td>
-                      {user.completedWordle ? (
-                        <td>{checkWordleStatus(user.wordleGuesses)}</td>
-                      ) : (
-                        <td>In progress...</td>
-                      )}
-
-                      {user.completedWordle ? (
-                        <td>{getWordleEmoji(user.wordleGuesses)}</td>
-                      ) : (
-                        <td>🤔</td>
-                      )}
+              <div className="table-wrapper">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Guesses</th>
+                      <th>Status</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {sortWordle().map((user) => (
+                      <tr
+                        key={user.uuid}
+                        className={!user.completedWordle ? "in-progress" : ""}
+                      >
+                        <td>
+                          {user.firstName} {user.lastName}
+                        </td>
+                        {user.completedWordle ? (
+                          <td>{checkWordleStatus(user.wordleGuesses)}</td>
+                        ) : (
+                          <td>In progress...</td>
+                        )}
+
+                        {user.completedWordle ? (
+                          <td>{getWordleEmoji(user.wordleGuesses)}</td>
+                        ) : (
+                          <td>🤔</td>
+                        )}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
